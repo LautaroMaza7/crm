@@ -8,38 +8,38 @@ const ReportsArea = () => {
   const reports = [
     {
       id: 1,
-      name: "Sessions",
+      name: "Consultas Recibidas",
       count: "6,132",
       rate: "150",
       isUp: true,
-      icon: <Session className="h-4 w-4" />,
+      icon: <Session className="h-4 w-4" />, // Puedes cambiar el icono si lo deseas
       color: "primary",
     },
     {
       id: 2,
-      name: "Page Views",
+      name: "Vistas de Propiedades",
       count: "11,236",
       rate: "202",
       isUp: false,
-      icon: <Eye className="h-4 w-4" />,
+      icon: <Eye className="h-4 w-4" />, // Puedes cambiar el icono si lo deseas
       color: "info",
     },
     {
       id: 3,
-      name: "Avg. Duration",
+      name: "Duración Promedio de Interés",
       count: "46s",
       rate: "22",
       isUp: true,
-      icon: <Increase className="h-4 w-4" />,
+      icon: <Increase className="h-4 w-4" />, // Puedes cambiar el icono si lo deseas
       color: "warning",
     },
     {
       id: 4,
-      name: "Bounce Rate",
+      name: "Tasa de Rebote",
       count: "46s",
       rate: "30",
       isUp: false,
-      icon: <Cup className="h-4 w-4" />,
+      icon: <Cup className="h-4 w-4" />, // Puedes cambiar el icono si lo deseas
       color: "destructive",
     },
   ];
@@ -71,7 +71,7 @@ const ReportsArea = () => {
                   </>
               }
             </div>
-            <div className="mt-1 text-xs text-default-600">vs Previous 30 Days</div>
+            <div className="mt-1 text-xs text-default-600">vs Últimos 30 Días</div>
           </CardContent>
         </Card>
       ))}

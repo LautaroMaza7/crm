@@ -16,11 +16,11 @@ const DashboardPageView = ({ trans }) => {
     <div className="space-y-6">
       <div className="flex items-center flex-wrap justify-between gap-4">
         <div className="text-2xl font-medium text-default-800 ">
-          Analytics {trans?.dashboard}
+          Panel de Control - SomosLuxGroup
         </div>
         <DatePickerWithRange />
       </div>
-      {/* reports area */}
+      {/* área de reportes */}
       <div className="grid grid-cols-12  gap-6 ">
         <div className="col-span-12 lg:col-span-8">
           <ReportsSnapshot />
@@ -36,7 +36,7 @@ const DashboardPageView = ({ trans }) => {
         <Card>
           <CardHeader className="border-none p-6 pt-5 mb-0">
             <CardTitle className="text-lg font-semibold text-default-900 p-0">
-              New vs Returning Visitors
+              Nuevos vs Recurrentes
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -46,7 +46,7 @@ const DashboardPageView = ({ trans }) => {
         <Card>
           <CardHeader className="border-none p-6 pt-5 mb-0">
             <CardTitle className="text-lg font-semibold text-default-900 p-0">
-              Device Breakdown
+              Dispositivos Utilizados
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -56,12 +56,12 @@ const DashboardPageView = ({ trans }) => {
           </CardContent>
         </Card>
       </div>
-      <div className="col-span-2">
+      {/* <div className="col-span-2">
         <Card>
           <CardHeader className="border-none pb-0">
             <div className="flex flex-wrap items-center gap-2">
               <div className="flex-1 text-xl font-semibold text-default-900 whitespace-nowrap">
-                User By Country
+                Consultas por País
               </div>
               <div className="flex-none">
                 <DashboardSelect />
@@ -72,7 +72,7 @@ const DashboardPageView = ({ trans }) => {
             <CountryMap />
           </CardContent>
         </Card>
-      </div>
+      </div> */}
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-12 lg:col-span-4">
           <TopTen />
@@ -80,7 +80,7 @@ const DashboardPageView = ({ trans }) => {
         <div className="col-span-12 lg:col-span-8">
           <Card>
             <CardHeader className="border-none pb-0">
-              <CardTitle className="pt-2.5">Top Page/Post</CardTitle>
+              <CardTitle className="pt-2.5">Propiedades/Páginas Destacadas</CardTitle>
             </CardHeader>
             <CardContent className="px-0">
               <TopPage />

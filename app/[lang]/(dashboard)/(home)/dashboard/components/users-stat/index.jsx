@@ -37,8 +37,8 @@ const UsersStat = () => {
       <CardHeader className="border-none pb-0 mb-5">
         <div className="flex items-center gap-1">
           <div className="flex-1">
-            <div className="text-xl font-semibold text-default-900"> Users </div>
-            <span className="text-xs text-default-600 ml-1">In Last 30 Minutes</span>
+            <div className="text-xl font-semibold text-default-900"> Usuarios </div>
+            <span className="text-xs text-default-600 ml-1">En los últimos 30 minutos</span>
           </div>
           <div className="flex-none flex items-center gap-1">
             <span className="text-4xl font-semibold text-primary">63</span>
@@ -49,9 +49,9 @@ const UsersStat = () => {
         </div>
       </CardHeader>
       <CardContent className="px-5 pb-0">
-        <p className="text-xs font-medium text-default-800">User Per Minutes</p>
+        <p className="text-xs font-medium text-default-800">Usuarios por minuto</p>
         <UsersDataChart />
-        <UsersDataTable users={users} />
+        {/* <UsersDataTable users={users} /> */}
       </CardContent>
     </Card>
   );

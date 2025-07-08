@@ -10,12 +10,8 @@ const SidebarLogo = ({ hovered }) => {
       <div className=" flex items-center">
         <div className=" flex-1">
           <Link href="/dashboard" className="flex items-center gap-x-3">
-            <SiteLogo className="text-primary h-8 w-8" />
-            {(!collapsed || hovered) && (
-              <div className="flex-1  text-xl text-primary  font-semibold">
-                DashTail
-              </div>
-            )}
+            <SiteLogo className="text-primary" />
+           
           </Link>
         </div>
         {sidebarType === "classic" && (!collapsed || hovered) && (

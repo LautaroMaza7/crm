@@ -89,7 +89,7 @@ const TopTen = () => {
   return (
     <Card>
       <CardHeader className="flex-row items-center justify-between border-none pb-0">
-        <CardTitle> Top 10 Referrals </CardTitle>
+        <CardTitle> Top 10 Referencias </CardTitle>
         <DashboardDropdown />
       </CardHeader>
       <CardContent className="px-0">

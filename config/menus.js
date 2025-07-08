@@ -992,7 +992,7 @@ export const menusConfig = {
       {
         title: "Inicio",
         icon: DashBoard,
-        href: "/inicio",
+        href: "/en/dashboard",
         isActive: true,
       },
       {
@@ -1000,11 +1000,11 @@ export const menusConfig = {
         icon: Messages,
         href: "/leads",
       },
-      {
-        title: "Usuarios",
-        icon: Users,
-        href: "/usuarios",
-      },
+      // {
+      //   title: "Usuarios",
+      //   icon: Users,
+      //   href: "/usuarios",
+      // },
       {
         title: "Vendedores",
         icon: Monitor,

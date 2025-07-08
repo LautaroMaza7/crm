@@ -9,22 +9,22 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import DashboardSelect from "@/components/dasboard-select";
 import { cn } from "@/lib/utils";
 
-const allUsersSeries = [
+const todasConsultasSeries = [
   {
     data: [90, 70, 85, 60, 80, 70, 90, 75, 60, 80],
   },
 ];
-const conversationSeries = [
+const consultasActivasSeries = [
   {
     data: [80, 70, 65, 40, 40, 100, 100, 75, 60, 80],
   },
 ];
-const eventCountSeries = [
+const proyectosInteresadosSeries = [
   {
     data: [20, 70, 65, 60, 40, 60, 90, 75, 60, 40],
   },
 ];
-const newUserSeries = [
+const nuevosContactosSeries = [
   {
     data: [20, 70, 65, 40, 100, 60, 100, 75, 60, 80],
   },
@@ -33,63 +33,55 @@ const ReportsSnapshot = () => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
-  const primary = `hsl(${
-    theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-  })`;
-  const warning = `hsl(${
-    theme?.cssVars[mode === "dark" ? "dark" : "light"].warning
-  })`;
-  const success = `hsl(${
-    theme?.cssVars[mode === "dark" ? "dark" : "light"].success
-  })`;
-  const info = `hsl(${
-    theme?.cssVars[mode === "dark" ? "dark" : "light"].info
-  })`;
+  const primary = `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`;
+  const warning = `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`;
+  const success = `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`;
+  const info = `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`;
   const tabsTrigger = [
     {
-      value: "all",
-      text: "all user",
+      value: "todas",
+      text: "Todas las consultas",
       total: "10,234",
       color: "primary",
     },
     {
-      value: "event",
-      text: "Event Count",
+      value: "proyectos",
+      text: "Proyectos interesados",
       total: "536",
       color: "warning",
     },
     {
-      value: "conversation",
-      text: "conversations",
+      value: "activas",
+      text: "Consultas activas",
       total: "21",
       color: "success",
     },
     {
-      value: "newuser",
-      text: "New User",
+      value: "nuevos",
+      text: "Nuevos contactos",
       total: "3321",
       color: "info",
     },
   ];
   const tabsContentData = [
     {
-      value: "all",
-      series: allUsersSeries,
+      value: "todas",
+      series: todasConsultasSeries,
       color: primary,
     },
     {
-      value: "event",
-      series: eventCountSeries,
+      value: "proyectos",
+      series: proyectosInteresadosSeries,
       color: warning,
     },
     {
-      value: "conversation",
-      series: conversationSeries,
+      value: "activas",
+      series: consultasActivasSeries,
       color: success,
     },
     {
-      value: "newuser",
-      series: newUserSeries,
+      value: "nuevos",
+      series: nuevosContactosSeries,
       color: info,
     },
   ];
@@ -99,10 +91,10 @@ const ReportsSnapshot = () => {
         <div className="flex items-center gap-2 flex-wrap ">
           <div className="flex-1">
             <div className="text-xl font-semibold text-default-900 whitespace-nowrap">
-              Reports Snapshot
+              Panel de Consultas - SomosLuxGroup
             </div>
             <span className="text-xs text-default-600">
-              Demographic properties of your customer
+              Seguimiento profesional de consultas inmobiliarias provenientes de Meta
             </span>
           </div>
           <div className="flex-none">
@@ -111,7 +103,7 @@ const ReportsSnapshot = () => {
         </div>
       </CardHeader>
       <CardContent className="p-1 md:p-5">
-        <Tabs defaultValue="all">
+        <Tabs defaultValue="todas">
           <TabsList className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-6 justify-start w-full bg-transparent h-full">
             {tabsTrigger.map((item, index) => (
               <TabsTrigger
@@ -147,7 +139,6 @@ const ReportsSnapshot = () => {
                   )}
                 ></span>
                 <span className="text-sm text-default-800 dark:text-primary-foreground font-semibold capitalize relative z-10">
-                  {" "}
                   {item.text}
                 </span>
                 <span
@@ -158,7 +149,7 @@ const ReportsSnapshot = () => {
               </TabsTrigger>
             ))}
           </TabsList>
-          {/* charts data */}
+          {/* datos de los charts */}
           {tabsContentData.map((item, index) => (
             <TabsContent key={`report-tab-${index}`} value={item.value}>
               <ReportsChart series={item.series} chartColor={item.color} />

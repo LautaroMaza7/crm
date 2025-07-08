@@ -55,7 +55,13 @@ export { default as Stacks2 } from "./duel-tone/stacks.svg";
 export { default as Pages } from "./duel-tone/pages.svg";
 export { default as Chart } from "./duel-tone/chart.svg";
 export { default as Map } from "./duel-tone/map.svg";
-export { default as SiteLogo } from "./duel-tone/logo.svg";
+
+import Image from "next/image";
+
+export const SiteLogo = (props) => (
+  <Image src="/images/logo/lux_logo.png" alt="Logo" width={32} height={32} {...props} />
+);
+
 export { default as Settings } from "./duel-tone/settings.svg";
 export { default as Files } from "./duel-tone/files.svg";
 export { default as Graph } from "./duel-tone/graph.svg";
