@@ -137,8 +137,3 @@ export function DataTable({ columns, data }) {
     </div>
   );
 }
-
-// Función helper para className
-function cn(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
