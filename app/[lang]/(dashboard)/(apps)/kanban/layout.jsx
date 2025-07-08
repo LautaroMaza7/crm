@@ -1,3 +1,5 @@
+"use client";
+
 const layout = ({ children }) => {
   return <>{children}</>;
 };
