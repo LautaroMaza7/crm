@@ -1,12 +1,8 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-
-import { labels, priorities, statuses } from "../data/data";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
-
 
 export const columns = [
   {
@@ -18,7 +14,7 @@ export const columns = [
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label="Seleccionar todos"
         className="translate-y-0.5"
       />
     ),
@@ -26,7 +22,7 @@ export const columns = [
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+        aria-label="Seleccionar fila"
         className="translate-y-0.5"
       />
     ),
@@ -36,90 +32,74 @@ export const columns = [
   {
     accessorKey: "id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Task" />
+      <DataTableColumnHeader column={column} title="ID" />
     ),
     cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "title",
+    accessorKey: "nombre",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
+      <DataTableColumnHeader column={column} title="Nombre" />
     ),
-    cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label);
-
-      return (
-        <div className="flex gap-2">
-          {label && <Badge variant="outline">{label.label}</Badge>}
-          <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("title")}
-          </span>
-        </div>
-      );
-    },
+    cell: ({ row }) => <span className="font-medium">{row.getValue("nombre")}</span>,
   },
   {
-    accessorKey: "status",
+    accessorKey: "email",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Email" />
     ),
-    cell: ({ row }) => {
-      const status = statuses.find(
-        (status) => status.value === row.getValue("status")
-      );
-
-      if (!status) {
-        return null;
-      }
-
-      return (
-        <div className="flex w-[100px] items-center">
-          {status.icon && (
-            <status.icon className="ltr:mr-2 rtl:ml-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{status.label}</span>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
+    cell: ({ row }) => <span>{row.getValue("email")}</span>,
   },
   {
-    accessorKey: "priority",
+    accessorKey: "telefono",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Priority" />
+      <DataTableColumnHeader column={column} title="Teléfono" />
     ),
-    cell: ({ row }) => {
-      const priority = priorities.find(
-        (priority) => priority.value === row.getValue("priority")
-      );
-
-      if (!priority) {
-        return null;
-      }
-
-      return (
-        <div className="flex items-center">
-          {priority.icon && (
-            <priority.icon className="ltr:mr-2 rtl:ml-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <Badge
-            color={
-              (priority.label === "High" && "destructive") ||
-              (priority.label === "Medium" && "info") ||
-              (priority.label === "Low" && "warning")
-            }>
-            {priority.label}
-          </Badge>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
+    cell: ({ row }) => <span>{row.getValue("telefono")}</span>,
+  },
+  {
+    accessorKey: "mensaje",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Mensaje" />
+    ),
+    cell: ({ row }) => <span className="max-w-[300px] truncate">{row.getValue("mensaje")}</span>,
+  },
+  {
+    accessorKey: "estado",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Estado" />
+    ),
+    cell: ({ row }) => <span>{row.getValue("estado")}</span>,
+  },
+  {
+    accessorKey: "origen",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Origen" />
+    ),
+    cell: ({ row }) => <span>{row.getValue("origen")}</span>,
+  },
+  {
+    accessorKey: "prioridad",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Prioridad" />
+    ),
+    cell: ({ row }) => <span>{row.getValue("prioridad")}</span>,
+  },
+  {
+    accessorKey: "fecha",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Fecha" />
+    ),
+    cell: ({ row }) => <span>{row.getValue("fecha")}</span>,
+  },
+  {
+    accessorKey: "proyecto",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Proyecto" />
+    ),
+    cell: ({ row }) => <span>{row.getValue("proyecto")}</span>,
   },
   {
     id: "actions",

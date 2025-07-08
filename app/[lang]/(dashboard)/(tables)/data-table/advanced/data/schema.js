@@ -1,11 +1,15 @@
 import { z } from "zod";
 
-// We're keeping a simple non-relational schema here.
-// IRL, you will have a schema for your data models.
-export const taskSchema = z.object({
+// Esquema para leads inmobiliarios recibidos desde Meta
+export const leadSchema = z.object({
   id: z.string(),
-  title: z.string(),
-  status: z.string(),
-  label: z.string(),
-  priority: z.string(),
+  nombre: z.string(),
+  email: z.string(),
+  telefono: z.string(),
+  mensaje: z.string(),
+  estado: z.string(),
+  origen: z.string(),
+  prioridad: z.string(),
+  fecha: z.string(),
+  proyecto: z.string(),
 });
