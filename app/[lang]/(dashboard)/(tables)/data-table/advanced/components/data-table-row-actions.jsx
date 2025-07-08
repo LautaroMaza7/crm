@@ -19,10 +19,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { labels } from "../data/data";
-import { taskSchema } from "../data/schema";
+import { leadSchema } from "../data/schema";
 
 export function DataTableRowActions({ row }) {
-  const task = taskSchema.parse(row.original);
+  const task = leadSchema.parse(row.original);
 
   return (
     <DropdownMenu>
