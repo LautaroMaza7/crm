@@ -63,8 +63,31 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 const Task = ({ task, onUpdateTask }) => {
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: task.id,
+    data: { type: "Task", task },
+  });
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+    opacity: isDragging ? 0.5 : 1,
+  };
   return (
-    <div className="bg-white rounded shadow p-4 mb-4 cursor-pointer border border-gray-200 hover:border-primary-500 transition-all" onClick={() => onUpdateTask && onUpdateTask(task)}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="bg-white rounded shadow p-4 mb-4 cursor-pointer border border-gray-200 hover:border-primary-500 transition-all"
+      onClick={() => onUpdateTask && onUpdateTask(task)}
+    >
       <div className="font-bold text-default-900 mb-1">{task.nombre}</div>
       <div className="text-xs text-default-600 mb-1">{task.email} | {task.telefono}</div>
       <div className="text-xs text-default-700 mb-2">{task.proyecto} | Prioridad: {task.prioridad}</div>

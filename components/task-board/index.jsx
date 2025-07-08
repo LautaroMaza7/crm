@@ -31,8 +31,9 @@ import { createPortal } from "react-dom";
 import { editBoardAction, swapBoardAction } from "@/action/project-action";
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
-const TaskBoard = ({ boards, tasks, subTasks, comments }) => {
+const TaskBoard = ({ boards, tasks: initialTasks, subTasks, comments }) => {
   const [taskView, setTaskView] = useState("kanban");
+  const [tasks, setTasks] = useState(initialTasks);
 
   const [open, setOpen] = useState(false);
   // for task create modal
@@ -111,36 +112,66 @@ const TaskBoard = ({ boards, tasks, subTasks, comments }) => {
   );
   const tasksIds = React.useMemo(() => tasks.map((task) => task.id), [tasks]);
   const [activeBoard, setActiveBoard] = React.useState(null);
+  const [activeTask, setActiveTask] = React.useState(null);
+
   const handleDragStart = (event) => {
     if (event.active.data.current?.type === "Column") {
       setActiveBoard(event.active.data.current.board);
-
+      return;
+    }
+    if (event.active.data.current?.type === "Task") {
+      setActiveTask(event.active.data.current.task);
       return;
     }
   };
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    if (!over) return;
-    const activeBoardId = active.id;
-    const overBoardId = over.id;
-    if (activeBoardId === overBoardId) return;
-
-    const oldIndex = boardsId.indexOf(activeBoardId);
-
-    const newIndex = boardsId.indexOf(overBoardId);
-
-    if (oldIndex !== newIndex) {
-      let data = {
-        activeBoardId,
-        overBoardId,
-      };
-      var result;
-      startTransition(async () => {
-        result = await swapBoardAction(data);
-        toast.success("Successfully update");
-      });
+    if (!over) {
+      setActiveTask(null);
+      setActiveBoard(null);
+      return;
+    }
+    // Drag de columnas (boards)
+    if (active.data.current?.type === "Column") {
+      const activeBoardId = active.id;
+      const overBoardId = over.id;
+      if (activeBoardId === overBoardId) return;
+      const oldIndex = boardsId.indexOf(activeBoardId);
+      const newIndex = boardsId.indexOf(overBoardId);
+      if (oldIndex !== newIndex) {
+        let data = {
+          activeBoardId,
+          overBoardId,
+        };
+        var result;
+        startTransition(async () => {
+          result = await swapBoardAction(data);
+          toast.success("Orden de vendedores actualizado");
+        });
+      }
+      setActiveBoard(null);
+      return;
+    }
+    // Drag de tareas (leads)
+    if (active.data.current?.type === "Task") {
+      const activeTaskId = active.id;
+      const overBoardId = over.id;
+      const task = tasks.find((t) => t.id === activeTaskId);
+      if (!task) return;
+      if (task.boardId === overBoardId) return;
+      // Actualizar boardId del lead
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.id === activeTaskId ? { ...t, boardId: overBoardId } : t
+        )
+      );
+      toast.success("Lead asignado a otro vendedor");
+      setActiveTask(null);
+      return;
     }
   };
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -149,7 +180,7 @@ const TaskBoard = ({ boards, tasks, subTasks, comments }) => {
     })
   );
   const onDragOver = (event) => {
-    console.log("ami k");
+    // No-op, pero se puede usar para animaciones
   };
   return (
     <>
@@ -183,32 +214,25 @@ const TaskBoard = ({ boards, tasks, subTasks, comments }) => {
                           onEdit={openEdit}
                           taskHandler={handleTaskOpener}
                           isTaskOpen={open2}
-                          showButton={
-                            !open2 || selectedBoardForTask !== board.id
-                          }
-                          tasks={tasks.filter(
-                            (task) => task.boardId === board.id
-                          )}
+                          showButton={!open2 || selectedBoardForTask !== board.id}
+                          tasks={tasks.filter((task) => task.boardId === board.id)}
                           onUpdateTask={updateTaskHandler}
                           boards={boards}
+                          // Nuevo: permitir drop de tareas
+                          acceptTaskDrop
                         >
                           <SortableContext items={tasksIds}>
-                            {filteredTasks(tasks, board.id)?.map(
-                              (filteredTask, j) => (
-                                <Task
-                                  key={`task-key-${j}`}
-                                  task={filteredTask}
-                                  onUpdateTask={updateTaskHandler}
-                                  boards={boards}
-                                />
-                              )
-                            )}
+                            {filteredTasks(tasks, board.id)?.map((filteredTask, j) => (
+                              <Task
+                                key={`task-key-${filteredTask.id}`}
+                                task={filteredTask}
+                                onUpdateTask={updateTaskHandler}
+                                boards={boards}
+                              />
+                            ))}
                           </SortableContext>
                           {open2 && selectedBoardForTask === board.id && (
-                            <AddTask
-                              onClose={closeTaskHandler}
-                              boardId={selectedBoardForTask}
-                            />
+                            <AddTask onClose={closeTaskHandler} boardId={selectedBoardForTask} />
                           )}
                         </Board>
                       ))}
