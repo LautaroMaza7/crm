@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "DashTail Next js Admin Template",
+  name: "Somos Lux Group | Panel ",
   description: null,
   theme: "violet",
   layout: "vertical",
