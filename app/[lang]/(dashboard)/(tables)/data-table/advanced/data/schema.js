@@ -12,4 +12,5 @@ export const leadSchema = z.object({
   prioridad: z.string(),
   fecha: z.string(),
   proyecto: z.string(),
+  vendedor: z.string().optional(),
 });
