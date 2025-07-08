@@ -17,7 +17,9 @@ const RtlSwitcher = () => {
   const handleDirectionChange = (rtl) => {
     const lang = rtl ? "ar" : "en";
     setRtl(rtl);
-    router.push(`/${lang}/${pathname.split("/")[2]}`);
+    const pathParts = pathname.split("/");
+    const safeSegment = pathParts.length > 2 ? pathParts[2] : "";
+    router.push(`/${lang}/${safeSegment}`);
   };
 
   return (
