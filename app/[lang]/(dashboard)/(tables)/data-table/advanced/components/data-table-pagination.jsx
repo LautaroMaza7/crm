@@ -2,6 +2,10 @@ import {
   ChevronsLeft,
   ChevronRight,
   ChevronLeft,
+  ChevronsRight,
+  Filter,
+  Search,
+  BarChart3,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -12,75 +16,175 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export function DataTablePagination({ table }) {
+  const currentPage = table.getState().pagination.pageIndex + 1;
+  const totalPages = table.getPageCount();
+  const totalRows = table.getFilteredRowModel().rows.length;
+  const selectedRows = table.getFilteredSelectedRowModel().rows.length;
+  const pageSize = table.getState().pagination.pageSize;
+
+  // Calcular rangos de páginas a mostrar
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
+  };
+
+  const startRow = (currentPage - 1) * pageSize + 1;
+  const endRow = Math.min(currentPage * pageSize, totalRows);
+
   return (
-    <div className="flex items-center flex-wrap gap-2 justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground whitespace-nowrap">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div>
-      <div className="flex flex-wrap items-center gap-6 lg:gap-8">
-        <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-muted-foreground whitespace-nowrap">Rows per page</p>
-          <Select
-            value={`${table.getState().pagination.pageSize}`}
-            onValueChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
-          >
-            <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
-            </SelectTrigger>
-            <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium text-muted-foreground">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
-        </div>
+    <div className="space-y-4">
+      {/* Estadísticas avanzadas */}
+      <Card className="border-0 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <CardContent className="p-4">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <BarChart3 className="h-4 w-4 text-blue-600" />
+                <span className="text-sm font-medium text-gray-700">
+                  Mostrando {startRow}-{endRow} de {totalRows} leads
+                </span>
+              </div>
+              {selectedRows > 0 && (
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  {selectedRows} seleccionado{selectedRows > 1 ? 's' : ''}
+                </Badge>
+              )}
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-gray-500" />
+                <span className="text-sm text-gray-600">
+                  Filas por página:
+                </span>
+                <Select
+                  value={`${pageSize}`}
+                  onValueChange={(value) => {
+                    table.setPageSize(Number(value));
+                  }}
+                >
+                  <SelectTrigger className="h-8 w-[70px] border-gray-300">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent side="top">
+                    {[10, 20, 30, 50, 100].map((size) => (
+                      <SelectItem key={size} value={`${size}`}>
+                        {size}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Paginación mejorada */}
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            size="sm"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
+            className="h-8 w-8 p-0 border-gray-300 hover:bg-gray-50"
           >
-            <span className="sr-only">Go to first page</span>
-            <ChevronsLeft className="h-4 w-4 rtl:rotate-180" />
+            <span className="sr-only">Primera página</span>
+            <ChevronsLeft className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
-            className="h-8 w-8 p-0"
+            size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            className="h-8 w-8 p-0 border-gray-300 hover:bg-gray-50"
           >
-            <span className="sr-only">Go to previous page</span>
-            <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
+            <span className="sr-only">Página anterior</span>
+            <ChevronLeft className="h-4 w-4" />
           </Button>
+        </div>
+
+        {/* Números de página */}
+        <div className="flex items-center gap-1">
+          {getPageNumbers().map((page, index) => (
+            <div key={index}>
+              {page === '...' ? (
+                <span className="px-3 py-2 text-sm text-gray-500">...</span>
+              ) : (
+                <Button
+                  variant={currentPage === page ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => table.setPageIndex(page - 1)}
+                  className={cn(
+                    "h-8 w-8 p-0 min-w-8",
+                    currentPage === page 
+                      ? "bg-blue-600 text-white hover:bg-blue-700" 
+                      : "border-gray-300 hover:bg-gray-50"
+                  )}
+                >
+                  {page}
+                </Button>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
           <Button
             variant="outline"
-            className="h-8 w-8 p-0"
+            size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            className="h-8 w-8 p-0 border-gray-300 hover:bg-gray-50"
           >
-            <span className="sr-only">Go to next page</span>
-            <ChevronRight className="h-4 w-4 rtl:rotate-180" />
+            <span className="sr-only">Página siguiente</span>
+            <ChevronRight className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            size="sm"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
+            className="h-8 w-8 p-0 border-gray-300 hover:bg-gray-50"
           >
-            <span className="sr-only">Go to last page</span>
-            <ChevronRight className="h-4 w-4 rtl:rotate-180" />
+            <span className="sr-only">Última página</span>
+            <ChevronsRight className="h-4 w-4" />
           </Button>
         </div>
       </div>
