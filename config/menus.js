@@ -998,7 +998,7 @@ export const menusConfig = {
       {
         title: "Leads",
         icon: Messages,
-        href: "/leads",
+        href: "/en/data-table",
       },
       // {
       //   title: "Usuarios",
