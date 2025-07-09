@@ -31,7 +31,6 @@ export function DataTableToolbar({ table }) {
     from: undefined,
     to: undefined,
   });
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const isFilteredState = table.getState().columnFilters.length > 0 || globalFilter || dateRange.from || dateRange.to;
 
@@ -98,7 +97,6 @@ export function DataTableToolbar({ table }) {
   const handleClearFilters = () => {
     setGlobalFilter("");
     setDateRange({ from: undefined, to: undefined });
-    setIsCalendarOpen(false);
     table.resetColumnFilters();
     table.setGlobalFilter("");
   };
@@ -111,11 +109,6 @@ export function DataTableToolbar({ table }) {
       // Por ejemplo, filtrar por fecha de creación
       console.log("Filtro de fecha aplicado:", range);
     }
-  };
-
-  // Handler para cerrar el calendario
-  const handleCalendarClose = () => {
-    setIsCalendarOpen(false);
   };
 
   // Función para formatear el texto del botón de fecha
@@ -131,16 +124,6 @@ export function DataTableToolbar({ table }) {
   // Función para limpiar el filtro de fecha
   const clearDateFilter = () => {
     setDateRange({ from: undefined, to: undefined });
-    setIsCalendarOpen(false);
-  };
-
-  // Función para aplicar el filtro de fecha
-  const applyDateFilter = () => {
-    setIsCalendarOpen(false);
-    // Aquí podrías implementar la lógica de filtrado real
-    if (dateRange.from) {
-      console.log("Aplicando filtro de fecha:", dateRange);
-    }
   };
 
   return (
@@ -249,7 +232,7 @@ export function DataTableToolbar({ table }) {
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">Fecha</label>
               <div className="flex gap-2">
-                <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
@@ -276,12 +259,6 @@ export function DataTableToolbar({ table }) {
                         onSelect={handleDateFilter}
                         numberOfMonths={2}
                         locale={es}
-                        onDayClick={() => {
-                          // Cerrar el calendario después de seleccionar un rango completo
-                          if (dateRange.from && dateRange.to) {
-                            setTimeout(() => setIsCalendarOpen(false), 100);
-                          }
-                        }}
                       />
                     </div>
                     {/* Botones de acción para el calendario */}
@@ -297,7 +274,13 @@ export function DataTableToolbar({ table }) {
                       <Button
                         variant="default"
                         size="sm"
-                        onClick={applyDateFilter}
+                        onClick={() => {
+                          // Cerrar el popover manualmente
+                          const popoverTrigger = document.querySelector('[data-state="open"]');
+                          if (popoverTrigger) {
+                            popoverTrigger.click();
+                          }
+                        }}
                         className="text-xs"
                       >
                         Aplicar
