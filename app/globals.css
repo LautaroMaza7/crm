@@ -322,3 +322,84 @@
     @apply grid-cols-4 gap-4;
   }
 } 
+
+/* Estilos para el calendario de filtros */
+.calendar-filter {
+  @apply relative;
+}
+
+.calendar-filter .rdp {
+  @apply bg-background border border-border rounded-lg shadow-lg;
+}
+
+.calendar-filter .rdp-day {
+  @apply text-foreground hover:bg-accent focus:bg-primary focus:text-primary-foreground;
+}
+
+.calendar-filter .rdp-day_selected {
+  @apply bg-primary text-primary-foreground;
+}
+
+.calendar-filter .rdp-day_range_start {
+  @apply bg-primary text-primary-foreground rounded-l-full;
+}
+
+.calendar-filter .rdp-day_range_end {
+  @apply bg-primary text-primary-foreground rounded-r-full;
+}
+
+.calendar-filter .rdp-day_range_middle {
+  @apply bg-primary/20 text-foreground;
+}
+
+.calendar-filter .rdp-day_today {
+  @apply bg-muted text-foreground font-semibold;
+}
+
+.calendar-filter .rdp-nav_button {
+  @apply text-foreground hover:bg-accent;
+}
+
+.calendar-filter .rdp-head_cell {
+  @apply text-muted-foreground font-medium;
+}
+
+/* Indicador de filtro activo */
+.filter-indicator {
+  @apply absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full animate-pulse;
+}
+
+/* Botón de filtro con estado activo */
+.filter-button-active {
+  @apply border-primary/50 bg-primary/5 text-primary;
+}
+
+/* Animación para el popover del calendario */
+.calendar-popover {
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para los botones de acción del calendario */
+.calendar-actions {
+  @apply flex items-center justify-end gap-2 p-3 border-t border-border bg-muted/20;
+}
+
+/* Estilos para el botón de limpiar filtro */
+.clear-filter-button {
+  @apply h-9 px-2 border-border hover:bg-accent text-foreground transition-colors;
+}
+
+.clear-filter-button:hover {
+  @apply bg-destructive/10 text-destructive border-destructive/30;
+} 

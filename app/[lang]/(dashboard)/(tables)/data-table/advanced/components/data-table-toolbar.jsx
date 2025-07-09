@@ -31,6 +31,7 @@ export function DataTableToolbar({ table }) {
     from: undefined,
     to: undefined,
   });
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const isFilteredState = table.getState().columnFilters.length > 0 || globalFilter || dateRange.from || dateRange.to;
 
@@ -97,14 +98,49 @@ export function DataTableToolbar({ table }) {
   const handleClearFilters = () => {
     setGlobalFilter("");
     setDateRange({ from: undefined, to: undefined });
+    setIsCalendarOpen(false);
     table.resetColumnFilters();
     table.setGlobalFilter("");
   };
 
   // Handler para filtro de fecha
-  const handleDateFilter = (from, to) => {
-    setDateRange({ from, to });
-    // Aquí podrías implementar el filtro de fecha en la tabla
+  const handleDateFilter = (range) => {
+    if (range?.from) {
+      setDateRange(range);
+      // Aquí podrías implementar el filtro de fecha en la tabla
+      // Por ejemplo, filtrar por fecha de creación
+      console.log("Filtro de fecha aplicado:", range);
+    }
+  };
+
+  // Handler para cerrar el calendario
+  const handleCalendarClose = () => {
+    setIsCalendarOpen(false);
+  };
+
+  // Función para formatear el texto del botón de fecha
+  const getDateButtonText = () => {
+    if (dateRange.from && dateRange.to) {
+      return `${format(dateRange.from, "dd/MM/yyyy", { locale: es })} - ${format(dateRange.to, "dd/MM/yyyy", { locale: es })}`;
+    } else if (dateRange.from) {
+      return format(dateRange.from, "dd/MM/yyyy", { locale: es });
+    }
+    return "Seleccionar fechas";
+  };
+
+  // Función para limpiar el filtro de fecha
+  const clearDateFilter = () => {
+    setDateRange({ from: undefined, to: undefined });
+    setIsCalendarOpen(false);
+  };
+
+  // Función para aplicar el filtro de fecha
+  const applyDateFilter = () => {
+    setIsCalendarOpen(false);
+    // Aquí podrías implementar la lógica de filtrado real
+    if (dateRange.from) {
+      console.log("Aplicando filtro de fecha:", dateRange);
+    }
   };
 
   return (
@@ -212,42 +248,75 @@ export function DataTableToolbar({ table }) {
             {/* Filtro por fecha */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">Fecha</label>
-              <Popover>
-                <PopoverTrigger asChild>
+              <div className="flex gap-2">
+                <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "h-9 flex-1 justify-start text-left font-normal border-border bg-background text-foreground relative",
+                        !dateRange.from && "text-muted-foreground",
+                        dateRange.from && "filter-button-active"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {getDateButtonText()}
+                      {dateRange.from && (
+                        <div className="filter-indicator"></div>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 calendar-popover" align="start">
+                    <div className="calendar-filter">
+                      <Calendar
+                        initialFocus
+                        mode="range"
+                        defaultMonth={dateRange.from}
+                        selected={dateRange}
+                        onSelect={handleDateFilter}
+                        numberOfMonths={2}
+                        locale={es}
+                        onDayClick={() => {
+                          // Cerrar el calendario después de seleccionar un rango completo
+                          if (dateRange.from && dateRange.to) {
+                            setTimeout(() => setIsCalendarOpen(false), 100);
+                          }
+                        }}
+                      />
+                    </div>
+                    {/* Botones de acción para el calendario */}
+                    <div className="calendar-actions">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={clearDateFilter}
+                        className="text-xs"
+                      >
+                        Limpiar
+                      </Button>
+                      <Button
+                        variant="default"
+                        size="sm"
+                        onClick={applyDateFilter}
+                        className="text-xs"
+                      >
+                        Aplicar
+                      </Button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                {dateRange.from && (
                   <Button
                     variant="outline"
-                    className={cn(
-                      "h-9 w-full justify-start text-left font-normal border-border bg-background text-foreground",
-                      !dateRange.from && "text-muted-foreground"
-                    )}
+                    size="sm"
+                    onClick={clearDateFilter}
+                    className="clear-filter-button"
+                    title="Limpiar filtro de fecha"
                   >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dateRange.from ? (
-                      dateRange.to ? (
-                        <>
-                          {format(dateRange.from, "dd/MM/yyyy", { locale: es })} -{" "}
-                          {format(dateRange.to, "dd/MM/yyyy", { locale: es })}
-                        </>
-                      ) : (
-                        format(dateRange.from, "dd/MM/yyyy", { locale: es })
-                      )
-                    ) : (
-                      <span>Seleccionar fechas</span>
-                    )}
+                    <X className="h-4 w-4" />
                   </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    initialFocus
-                    mode="range"
-                    defaultMonth={dateRange.from}
-                    selected={dateRange}
-                    onSelect={handleDateFilter}
-                    numberOfMonths={2}
-                    locale={es}
-                  />
-                </PopoverContent>
-              </Popover>
+                )}
+              </div>
             </div>
           </div>
 
