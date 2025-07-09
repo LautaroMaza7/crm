@@ -1,6 +1,6 @@
 "use client";
 
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Edit, Copy, Star, Trash2, Phone, Mail, MessageSquare, UserCheck } from "lucide-react";
 import { Row } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -18,43 +18,70 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { labels } from "../data/data";
-import { leadSchema } from "../data/schema";
-
 export function DataTableRowActions({ row }) {
-  const task = leadSchema.parse(row.original);
+  const lead = row.original;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+          className="flex h-8 w-8 p-0 data-[state=open]:bg-accent text-foreground"
         >
           <MoreHorizontal className="h-4 w-4" />
-          <span className="sr-only">Open menu</span>
+          <span className="sr-only">Abrir menú</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>Make a copy</DropdownMenuItem>
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
+      <DropdownMenuContent align="end" className="w-[200px] bg-background border-border">
+        <DropdownMenuItem className="text-foreground hover:bg-accent">
+          <Edit className="mr-2 h-4 w-4" />
+          Editar Lead
+        </DropdownMenuItem>
+        <DropdownMenuItem className="text-foreground hover:bg-accent">
+          <Copy className="mr-2 h-4 w-4" />
+          Duplicar Lead
+        </DropdownMenuItem>
+        <DropdownMenuItem className="text-foreground hover:bg-accent">
+          <Star className="mr-2 h-4 w-4" />
+          Marcar como Favorito
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="text-foreground hover:bg-accent">
+          <Phone className="mr-2 h-4 w-4" />
+          Llamar
+        </DropdownMenuItem>
+        <DropdownMenuItem className="text-foreground hover:bg-accent">
+          <Mail className="mr-2 h-4 w-4" />
+          Enviar Email
+        </DropdownMenuItem>
+        <DropdownMenuItem className="text-foreground hover:bg-accent">
+          <MessageSquare className="mr-2 h-4 w-4" />
+          Enviar WhatsApp
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.label}>
-              {labels.map((label) => (
-                <DropdownMenuRadioItem key={label.value} value={label.value}>
-                  {label.label}
-                </DropdownMenuRadioItem>
-              ))}
+          <DropdownMenuSubTrigger className="text-foreground hover:bg-accent">
+            <UserCheck className="mr-2 h-4 w-4" />
+            Cambiar Estado
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent className="bg-background border-border">
+            <DropdownMenuRadioGroup value={lead.estado}>
+              <DropdownMenuRadioItem value="nuevo" className="text-foreground hover:bg-accent">
+                Nuevo
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="en seguimiento" className="text-foreground hover:bg-accent">
+                En Seguimiento
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="contactado" className="text-foreground hover:bg-accent">
+                Contactado
+              </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Delete
+        <DropdownMenuItem className="text-destructive hover:bg-destructive/10 focus:text-destructive">
+          <Trash2 className="mr-2 h-4 w-4" />
+          Eliminar
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

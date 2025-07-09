@@ -69,18 +69,18 @@ export function DataTablePagination({ table }) {
   return (
     <div className="space-y-4">
       {/* Estadísticas avanzadas */}
-      <Card className="border-0 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <Card className="border border-border bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-900/50">
         <CardContent className="p-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
-                <BarChart3 className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-medium text-gray-700">
+                <BarChart3 className="h-4 w-4 text-primary" />
+                <span className="text-sm font-medium text-foreground">
                   Mostrando {startRow}-{endRow} de {totalRows} leads
                 </span>
               </div>
               {selectedRows > 0 && (
-                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
                   {selectedRows} seleccionado{selectedRows > 1 ? 's' : ''}
                 </Badge>
               )}
@@ -88,8 +88,8 @@ export function DataTablePagination({ table }) {
             
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <Filter className="h-4 w-4 text-gray-500" />
-                <span className="text-sm text-gray-600">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">
                   Filas por página:
                 </span>
                 <Select
@@ -98,7 +98,7 @@ export function DataTablePagination({ table }) {
                     table.setPageSize(Number(value));
                   }}
                 >
-                  <SelectTrigger className="h-8 w-[70px] border-gray-300">
+                  <SelectTrigger className="h-8 w-[70px] border-border bg-background text-foreground">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent side="top">
@@ -123,7 +123,7 @@ export function DataTablePagination({ table }) {
             size="sm"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
-            className="h-8 w-8 p-0 border-gray-300 hover:bg-gray-50"
+            className="h-8 w-8 p-0 border-border hover:bg-accent text-foreground"
           >
             <span className="sr-only">Primera página</span>
             <ChevronsLeft className="h-4 w-4" />
@@ -133,7 +133,7 @@ export function DataTablePagination({ table }) {
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="h-8 w-8 p-0 border-gray-300 hover:bg-gray-50"
+            className="h-8 w-8 p-0 border-border hover:bg-accent text-foreground"
           >
             <span className="sr-only">Página anterior</span>
             <ChevronLeft className="h-4 w-4" />
@@ -145,7 +145,7 @@ export function DataTablePagination({ table }) {
           {getPageNumbers().map((page, index) => (
             <div key={index}>
               {page === '...' ? (
-                <span className="px-3 py-2 text-sm text-gray-500">...</span>
+                <span className="px-3 py-2 text-sm text-muted-foreground">...</span>
               ) : (
                 <Button
                   variant={currentPage === page ? "default" : "outline"}
@@ -154,8 +154,8 @@ export function DataTablePagination({ table }) {
                   className={cn(
                     "h-8 w-8 p-0 min-w-8",
                     currentPage === page 
-                      ? "bg-blue-600 text-white hover:bg-blue-700" 
-                      : "border-gray-300 hover:bg-gray-50"
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90" 
+                      : "border-border hover:bg-accent text-foreground"
                   )}
                 >
                   {page}
@@ -171,7 +171,7 @@ export function DataTablePagination({ table }) {
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="h-8 w-8 p-0 border-gray-300 hover:bg-gray-50"
+            className="h-8 w-8 p-0 border-border hover:bg-accent text-foreground"
           >
             <span className="sr-only">Página siguiente</span>
             <ChevronRight className="h-4 w-4" />
@@ -181,7 +181,7 @@ export function DataTablePagination({ table }) {
             size="sm"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
-            className="h-8 w-8 p-0 border-gray-300 hover:bg-gray-50"
+            className="h-8 w-8 p-0 border-border hover:bg-accent text-foreground"
           >
             <span className="sr-only">Última página</span>
             <ChevronsRight className="h-4 w-4" />

@@ -39,7 +39,7 @@ export const columns = [
       <DataTableColumnHeader column={column} title="ID" />
     ),
     cell: ({ row }) => (
-      <div className="w-[80px] font-mono text-sm text-gray-600">
+      <div className="w-[80px] font-mono text-sm text-muted-foreground">
         {row.getValue("id")}
       </div>
     ),
@@ -53,8 +53,8 @@ export const columns = [
     ),
     cell: ({ row }) => (
       <div className="flex flex-col">
-        <span className="font-semibold text-gray-900">{row.getValue("nombre")}</span>
-        <span className="text-xs text-gray-500">{row.getValue("email")}</span>
+        <span className="font-semibold text-foreground">{row.getValue("nombre")}</span>
+        <span className="text-xs text-muted-foreground">{row.getValue("email")}</span>
       </div>
     ),
   },
@@ -65,8 +65,8 @@ export const columns = [
     ),
     cell: ({ row }) => (
       <div className="flex flex-col">
-        <span className="font-medium text-gray-900">{row.getValue("telefono")}</span>
-        <span className="text-xs text-gray-500">{row.getValue("email")}</span>
+        <span className="font-medium text-foreground">{row.getValue("telefono")}</span>
+        <span className="text-xs text-muted-foreground">{row.getValue("email")}</span>
       </div>
     ),
   },
@@ -77,7 +77,7 @@ export const columns = [
     ),
     cell: ({ row }) => (
       <div className="max-w-[300px]">
-        <p className="text-sm text-gray-700 line-clamp-2">
+        <p className="text-sm text-foreground line-clamp-2">
           {row.getValue("mensaje")}
         </p>
       </div>
@@ -91,16 +91,16 @@ export const columns = [
     cell: ({ row }) => {
       const estado = row.getValue("estado");
       const estadoColors = {
-        nuevo: "bg-blue-100 text-blue-800 border-blue-200",
-        "en seguimiento": "bg-yellow-100 text-yellow-800 border-yellow-200",
-        contactado: "bg-green-100 text-green-800 border-green-200",
+        nuevo: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700/50",
+        "en seguimiento": "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700/50",
+        contactado: "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700/50",
       };
       
       return (
         <Badge 
           className={cn(
             "font-medium",
-            estadoColors[estado] || "bg-gray-100 text-gray-800"
+            estadoColors[estado] || "bg-muted text-muted-foreground"
           )}
         >
           {estado}
@@ -116,16 +116,16 @@ export const columns = [
     cell: ({ row }) => {
       const prioridad = row.getValue("prioridad");
       const prioridadColors = {
-        alta: "bg-red-100 text-red-800 border-red-200",
-        media: "bg-orange-100 text-orange-800 border-orange-200",
-        baja: "bg-gray-100 text-gray-800 border-gray-200",
+        alta: "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700/50",
+        media: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700/50",
+        baja: "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600",
       };
       
       return (
         <Badge 
           className={cn(
             "font-medium",
-            prioridadColors[prioridad] || "bg-gray-100 text-gray-800"
+            prioridadColors[prioridad] || "bg-muted text-muted-foreground"
           )}
         >
           {prioridad}
@@ -140,8 +140,8 @@ export const columns = [
     ),
     cell: ({ row }) => (
       <div className="flex flex-col">
-        <span className="font-medium text-gray-900">{row.getValue("proyecto")}</span>
-        <span className="text-xs text-gray-500">{row.getValue("origen")}</span>
+        <span className="font-medium text-foreground">{row.getValue("proyecto")}</span>
+        <span className="text-xs text-muted-foreground">{row.getValue("origen")}</span>
       </div>
     ),
   },
@@ -156,16 +156,16 @@ export const columns = [
         const date = new Date(fecha);
         return (
           <div className="flex flex-col">
-            <span className="font-medium text-gray-900">
+            <span className="font-medium text-foreground">
               {format(date, "dd/MM/yyyy", { locale: es })}
             </span>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-muted-foreground">
               {format(date, "EEEE", { locale: es })}
             </span>
           </div>
         );
       } catch {
-        return <span className="text-gray-500">{fecha}</span>;
+        return <span className="text-muted-foreground">{fecha}</span>;
       }
     },
   },

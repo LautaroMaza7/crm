@@ -50,18 +50,18 @@ export function DataTableToolbar({ table }) {
     return uniqueProyectos;
   }, [table.options.data]);
 
-  // Colores para estados
+  // Colores para estados con soporte dark/light
   const estadoColors = {
-    nuevo: "bg-blue-100 text-blue-800 border-blue-200",
-    "en seguimiento": "bg-yellow-100 text-yellow-800 border-yellow-200",
-    contactado: "bg-green-100 text-green-800 border-green-200",
+    nuevo: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700/50",
+    "en seguimiento": "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700/50",
+    contactado: "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700/50",
   };
 
-  // Colores para prioridades
+  // Colores para prioridades con soporte dark/light
   const prioridadColors = {
-    alta: "bg-red-100 text-red-800 border-red-200",
-    media: "bg-orange-100 text-orange-800 border-orange-200",
-    baja: "bg-gray-100 text-gray-800 border-gray-200",
+    alta: "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700/50",
+    media: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700/50",
+    baja: "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600",
   };
 
   // Handler para crear un nuevo lead temporal
@@ -110,17 +110,17 @@ export function DataTableToolbar({ table }) {
   return (
     <div className="space-y-4">
       {/* Búsqueda global y acciones principales */}
-      <Card className="border-0 bg-gradient-to-r from-slate-50 to-gray-50">
+      <Card className="border border-border bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900/50 dark:to-gray-900/50">
         <CardContent className="p-4">
           <div className="flex flex-wrap items-center gap-4">
             {/* Búsqueda global */}
             <div className="relative flex-1 min-w-[300px]">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Buscar en todos los campos..."
                 value={globalFilter}
                 onChange={(event) => handleGlobalFilter(event.target.value)}
-                className="pl-10 h-10 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                className="pl-10 h-10 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary"
               />
             </div>
 
@@ -130,7 +130,7 @@ export function DataTableToolbar({ table }) {
                 variant="outline"
                 onClick={handleClearFilters}
                 disabled={!isFilteredState}
-                className="h-10 px-4 border-gray-300 hover:bg-gray-50"
+                className="h-10 px-4 border-border hover:bg-accent text-foreground"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Limpiar
@@ -138,7 +138,7 @@ export function DataTableToolbar({ table }) {
               <Button
                 variant="default"
                 onClick={handleAddLead}
-                className="h-10 px-4 bg-blue-600 hover:bg-blue-700"
+                className="h-10 px-4 bg-primary hover:bg-primary/90 text-primary-foreground"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Nuevo Lead
@@ -150,10 +150,10 @@ export function DataTableToolbar({ table }) {
       </Card>
 
       {/* Filtros avanzados */}
-      <Card className="border border-gray-200">
+      <Card className="border border-border bg-card">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <Filter className="h-5 w-5 text-blue-600" />
+          <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+            <Filter className="h-5 w-5 text-primary" />
             Filtros Avanzados
           </CardTitle>
         </CardHeader>
@@ -162,40 +162,40 @@ export function DataTableToolbar({ table }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Filtro por nombre */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Nombre</label>
+              <label className="text-sm font-medium text-foreground">Nombre</label>
               <Input
                 placeholder="Filtrar por nombre..."
                 value={table.getColumn("nombre")?.getFilterValue() ?? ""}
                 onChange={(event) =>
                   table.getColumn("nombre")?.setFilterValue(event.target.value)
                 }
-                className="h-9 border-gray-300 focus:border-blue-500"
+                className="h-9 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary"
               />
             </div>
 
             {/* Filtro por email */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Email</label>
+              <label className="text-sm font-medium text-foreground">Email</label>
               <Input
                 placeholder="Filtrar por email..."
                 value={table.getColumn("email")?.getFilterValue() ?? ""}
                 onChange={(event) =>
                   table.getColumn("email")?.setFilterValue(event.target.value)
                 }
-                className="h-9 border-gray-300 focus:border-blue-500"
+                className="h-9 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary"
               />
             </div>
 
             {/* Filtro por proyecto */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Proyecto</label>
+              <label className="text-sm font-medium text-foreground">Proyecto</label>
               <Select
                 value={table.getColumn("proyecto")?.getFilterValue() ?? ""}
                 onValueChange={(value) =>
                   table.getColumn("proyecto")?.setFilterValue(value)
                 }
               >
-                <SelectTrigger className="h-9 border-gray-300 focus:border-blue-500">
+                <SelectTrigger className="h-9 border-border bg-background text-foreground focus:border-primary">
                   <SelectValue placeholder="Todos los proyectos" />
                 </SelectTrigger>
                 <SelectContent>
@@ -211,13 +211,13 @@ export function DataTableToolbar({ table }) {
 
             {/* Filtro por fecha */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Fecha</label>
+              <label className="text-sm font-medium text-foreground">Fecha</label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     className={cn(
-                      "h-9 w-full justify-start text-left font-normal border-gray-300",
+                      "h-9 w-full justify-start text-left font-normal border-border bg-background text-foreground",
                       !dateRange.from && "text-muted-foreground"
                     )}
                   >
@@ -255,17 +255,17 @@ export function DataTableToolbar({ table }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Filtro por estado */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Estado</label>
+              <label className="text-sm font-medium text-foreground">Estado</label>
               <div className="flex flex-wrap gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => table.getColumn("estado")?.setFilterValue("")}
                   className={cn(
-                    "h-8 text-xs",
+                    "h-8 text-xs border-border",
                     !table.getColumn("estado")?.getFilterValue() 
-                      ? "bg-blue-50 border-blue-200 text-blue-700" 
-                      : "border-gray-300"
+                      ? "bg-primary/10 border-primary/30 text-primary" 
+                      : "hover:bg-accent"
                   )}
                 >
                   Todos
@@ -277,16 +277,16 @@ export function DataTableToolbar({ table }) {
                     size="sm"
                     onClick={() => table.getColumn("estado")?.setFilterValue(estado)}
                     className={cn(
-                      "h-8 text-xs",
+                      "h-8 text-xs border-border",
                       table.getColumn("estado")?.getFilterValue() === estado
-                        ? "bg-blue-50 border-blue-200 text-blue-700"
-                        : "border-gray-300"
+                        ? "bg-primary/10 border-primary/30 text-primary"
+                        : "hover:bg-accent"
                     )}
                   >
                     <Badge 
                       className={cn(
                         "mr-1 text-xs",
-                        estadoColors[estado] || "bg-gray-100 text-gray-800"
+                        estadoColors[estado] || "bg-muted text-muted-foreground"
                       )}
                     >
                       {estado}
@@ -298,17 +298,17 @@ export function DataTableToolbar({ table }) {
 
             {/* Filtro por prioridad */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Prioridad</label>
+              <label className="text-sm font-medium text-foreground">Prioridad</label>
               <div className="flex flex-wrap gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => table.getColumn("prioridad")?.setFilterValue("")}
                   className={cn(
-                    "h-8 text-xs",
+                    "h-8 text-xs border-border",
                     !table.getColumn("prioridad")?.getFilterValue() 
-                      ? "bg-blue-50 border-blue-200 text-blue-700" 
-                      : "border-gray-300"
+                      ? "bg-primary/10 border-primary/30 text-primary" 
+                      : "hover:bg-accent"
                   )}
                 >
                   Todas
@@ -320,16 +320,16 @@ export function DataTableToolbar({ table }) {
                     size="sm"
                     onClick={() => table.getColumn("prioridad")?.setFilterValue(prioridad)}
                     className={cn(
-                      "h-8 text-xs",
+                      "h-8 text-xs border-border",
                       table.getColumn("prioridad")?.getFilterValue() === prioridad
-                        ? "bg-blue-50 border-blue-200 text-blue-700"
-                        : "border-gray-300"
+                        ? "bg-primary/10 border-primary/30 text-primary"
+                        : "hover:bg-accent"
                     )}
                   >
                     <Badge 
                       className={cn(
                         "mr-1 text-xs",
-                        prioridadColors[prioridad] || "bg-gray-100 text-gray-800"
+                        prioridadColors[prioridad] || "bg-muted text-muted-foreground"
                       )}
                     >
                       {prioridad}
