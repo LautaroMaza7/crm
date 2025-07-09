@@ -21,22 +21,6 @@ const DashboardPageView = ({ trans }) => {
         </div>
         <DatePickerWithRange />
       </div>
-      {/* Acceso directo al Kanban de Leads */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-        <Link href="/es/(dashboard)/(apps)/kanban">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer border-primary-500 border-2">
-            <CardHeader className="border-none p-6 pt-5 mb-0">
-              <CardTitle className="text-lg font-semibold text-primary-700 p-0 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><rect width="6" height="6" x="3" y="3" fill="#6366F1" rx="1.5"/><rect width="6" height="6" x="3" y="15" fill="#6366F1" rx="1.5"/><rect width="6" height="6" x="15" y="3" fill="#6366F1" rx="1.5"/><rect width="6" height="6" x="15" y="15" fill="#6366F1" rx="1.5"/></svg>
-                Kanban de Leads
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-default-700 text-sm">Gestiona y mueve tus leads fácilmente entre estados con drag & drop.</div>
-            </CardContent>
-          </Card>
-        </Link>
-      </div>
       {/* área de reportes */}
       <div className="grid grid-cols-12  gap-6 ">
         <div className="col-span-12 lg:col-span-8">

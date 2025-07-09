@@ -403,3 +403,130 @@
 .clear-filter-button:hover {
   @apply bg-destructive/10 text-destructive border-destructive/30;
 } 
+
+/* Estilos para el dropdown del perfil */
+.profile-dropdown {
+  @apply bg-background border border-border rounded-lg shadow-lg;
+}
+
+.profile-avatar {
+  @apply relative inline-flex items-center justify-center;
+}
+
+.profile-avatar-initials {
+  @apply bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold;
+}
+
+.profile-status-indicator {
+  @apply absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-background rounded-full;
+}
+
+.profile-stats-grid {
+  @apply grid grid-cols-3 gap-4 p-4 border-b border-border bg-muted/20;
+}
+
+.profile-stats-item {
+  @apply text-center;
+}
+
+.profile-stats-number {
+  @apply text-lg font-bold text-foreground;
+}
+
+.profile-stats-label {
+  @apply text-xs text-muted-foreground;
+}
+
+.profile-menu-item {
+  @apply flex items-center gap-3 p-3 rounded-lg hover:bg-accent cursor-pointer transition-colors;
+}
+
+.profile-menu-item-icon {
+  @apply w-4 h-4 text-muted-foreground;
+}
+
+.profile-menu-item-content {
+  @apply flex-1;
+}
+
+.profile-menu-item-title {
+  @apply text-sm font-medium text-foreground;
+}
+
+.profile-menu-item-description {
+  @apply text-xs text-muted-foreground;
+}
+
+.profile-logout-item {
+  @apply flex items-center gap-3 p-3 rounded-lg hover:bg-destructive/10 hover:text-destructive cursor-pointer transition-colors;
+}
+
+/* Animaciones para el dropdown */
+.profile-dropdown-enter {
+  animation: slideInUp 0.2s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efectos hover mejorados */
+.profile-trigger {
+  @apply flex items-center gap-3 p-2 rounded-lg hover:bg-accent transition-colors;
+}
+
+.profile-trigger:hover {
+  @apply bg-accent/80;
+}
+
+/* Estilos para el avatar con gradiente */
+.avatar-gradient {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
+}
+
+/* Estilos para las estadísticas */
+.stats-highlight {
+  @apply text-green-600 dark:text-green-400;
+}
+
+.stats-primary {
+  @apply text-primary;
+}
+
+/* Estilos para los separadores */
+.profile-separator {
+  @apply border-border bg-border;
+}
+
+/* Estilos para el submenu */
+.profile-submenu {
+  @apply bg-background border border-border rounded-lg shadow-lg;
+}
+
+.profile-submenu-item {
+  @apply flex items-center gap-2 p-2 hover:bg-accent cursor-pointer transition-colors;
+}
+
+/* Responsive design para el perfil */
+@media (max-width: 768px) {
+  .profile-trigger-text {
+    @apply hidden;
+  }
+  
+  .profile-dropdown-content {
+    @apply w-72;
+  }
+}
+
+@media (min-width: 769px) {
+  .profile-dropdown-content {
+    @apply w-80;
+  }
+} 
