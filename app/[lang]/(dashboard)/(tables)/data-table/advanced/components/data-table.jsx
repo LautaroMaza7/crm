@@ -68,14 +68,14 @@ export function DataTable({ columns, data }) {
       {/* Toolbar y tabla */}
       <div className="space-y-4">
         <DataTableToolbar table={table} />
-        <div className="rounded-md border border-gray-200 bg-white shadow-sm">
+        <div className="rounded-md border border-border bg-card shadow-sm">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="bg-gray-50 hover:bg-gray-50">
+                <TableRow key={headerGroup.id} className="bg-muted/50 hover:bg-muted/50">
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id} colSpan={header.colSpan} className="font-semibold text-gray-700">
+                      <TableHead key={header.id} colSpan={header.colSpan} className="font-semibold text-foreground">
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -95,9 +95,9 @@ export function DataTable({ columns, data }) {
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     className={cn(
-                      "hover:bg-gray-50 transition-colors",
-                      index % 2 === 0 ? "bg-white" : "bg-gray-25",
-                      row.getIsSelected() && "bg-blue-50"
+                      "hover:bg-muted/50 transition-colors",
+                      index % 2 === 0 ? "bg-card" : "bg-muted/20",
+                      row.getIsSelected() && "bg-primary/10"
                     )}
                   >
                     {row.getVisibleCells().map((cell) => (
@@ -117,10 +117,10 @@ export function DataTable({ columns, data }) {
                     className="h-32 text-center"
                   >
                     <div className="flex flex-col items-center justify-center space-y-2">
-                      <div className="text-gray-400 text-lg font-medium">
+                      <div className="text-muted-foreground text-lg font-medium">
                         No se encontraron resultados
                       </div>
-                      <div className="text-gray-500 text-sm">
+                      <div className="text-muted-foreground/70 text-sm">
                         Intenta ajustar los filtros o la búsqueda
                       </div>
                     </div>
