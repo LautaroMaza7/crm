@@ -18,9 +18,9 @@ export const metadata = {
   keywords: siteConfig.keywords,
   authors: [{ name: siteConfig.author, url: "https://somosluxgroup.com" }],
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: "/luxfavicon.ico",
+    shortcut: "/luxfavicon.ico",
+    apple: "/luxfavicon.ico",
   },
   openGraph: {
     title: siteConfig.name,
@@ -53,7 +53,7 @@ export default function RootLayout({ children, params: { lang } }) {
   return (
     <html lang={lang}>
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/luxfavicon.ico" />
         <meta name="description" content={siteConfig.description} />
         <meta name="keywords" content={siteConfig.keywords} />
         <meta name="author" content={siteConfig.author} />
