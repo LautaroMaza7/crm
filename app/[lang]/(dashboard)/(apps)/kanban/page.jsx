@@ -25,14 +25,14 @@ const Kanban = async () => {
   const comments = [];
   return (
     <>
-      <div className="flex flex-wrap mb-7">
+      {/* <div className="flex flex-wrap mb-7">
         <div className="text-xl font-medium text-default-900 flex-1">
           Kanban de Leads
         </div>
         <div className="flex-none">
           <KanbanBreadCrumbs />
         </div>
-      </div>
+      </div> */}
       <TaskBoard
         boards={boards}
         tasks={tasks}

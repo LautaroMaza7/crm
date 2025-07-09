@@ -10,7 +10,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  getGlobalFilteredRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -52,7 +51,6 @@ export function DataTable({ columns, data }) {
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getGlobalFilteredRowModel: getGlobalFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
