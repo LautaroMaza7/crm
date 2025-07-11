@@ -41,16 +41,17 @@ const LoginPage = () => {
 
                 <div className="text-4xl leading-[50px] 2xl:text-6xl 2xl:leading-[72px] font-semibold mt-2.5">
                   <span className="text-default-600 dark:text-default-300 ">
-                    Unlock <br />
-                    Your Project <br />
+                    Descubre <br />
+                    el potencial de <br />
+                    SomosLuxGroup <br />
                   </span>
                   <span className="text-default-900 dark:text-default-50">
-                    Performance
+                    con nuestro CRM
                   </span>
                 </div>
                 <div className="mt-5 2xl:mt-8 text-default-900 dark:text-default-200  text-2xl font-medium">
-                  You will never know everything. <br />
-                  But you will know more...
+                  Nunca lo sabrás todo,<br />
+                  pero cada día sabrás más con SomosLuxGroup.
                 </div>
               </div>
             </div>

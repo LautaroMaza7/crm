@@ -1,5 +1,15 @@
 "use client";
-import { X, Plus, Search, Filter, Calendar, Users, Target, RefreshCw } from "lucide-react";
+import {
+  X,
+  Plus,
+  Search,
+  Filter,
+  Calendar,
+  Users,
+  Target,
+  RefreshCw,
+  Kanban,
+} from "lucide-react";
 import { useState, useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -25,6 +35,7 @@ import { es } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Link from "next/link";
 
 // Componente para seleccionar fechas individuales (Desde y Hasta) usando react-datepicker
 function DatePickers({ dateRange, setDateRange }) {
@@ -34,7 +45,7 @@ function DatePickers({ dateRange, setDateRange }) {
         <label className="block text-xs mb-1">Desde</label>
         <ReactDatePicker
           selected={dateRange.from}
-          onChange={date => setDateRange(r => ({ ...r, from: date }))}
+          onChange={(date) => setDateRange((r) => ({ ...r, from: date }))}
           selectsStart
           startDate={dateRange.from}
           endDate={dateRange.to}
@@ -48,7 +59,7 @@ function DatePickers({ dateRange, setDateRange }) {
         <label className="block text-xs mb-1">Hasta</label>
         <ReactDatePicker
           selected={dateRange.to}
-          onChange={date => setDateRange(r => ({ ...r, to: date }))}
+          onChange={(date) => setDateRange((r) => ({ ...r, to: date }))}
           selectsEnd
           startDate={dateRange.from}
           endDate={dateRange.to}
@@ -81,35 +92,49 @@ export function DataTableToolbar({ table }) {
     to: undefined,
   });
 
-  const isFilteredState = table.getState().columnFilters.length > 0 || globalFilter || dateRange.from || dateRange.to;
+  const isFilteredState =
+    table.getState().columnFilters.length > 0 ||
+    globalFilter ||
+    dateRange.from ||
+    dateRange.to;
 
   // Estados únicos para filtros
   const estados = useMemo(() => {
-    const uniqueEstados = [...new Set(table.options.data.map(item => item.estado))];
+    const uniqueEstados = [
+      ...new Set(table.options.data.map((item) => item.estado)),
+    ];
     return uniqueEstados;
   }, [table.options.data]);
 
   const prioridades = useMemo(() => {
-    const uniquePrioridades = [...new Set(table.options.data.map(item => item.prioridad))];
+    const uniquePrioridades = [
+      ...new Set(table.options.data.map((item) => item.prioridad)),
+    ];
     return uniquePrioridades;
   }, [table.options.data]);
 
   const proyectos = useMemo(() => {
-    const uniqueProyectos = [...new Set(table.options.data.map(item => item.proyecto))];
+    const uniqueProyectos = [
+      ...new Set(table.options.data.map((item) => item.proyecto)),
+    ];
     return uniqueProyectos;
   }, [table.options.data]);
 
   // Colores para estados con soporte dark/light
   const estadoColors = {
-    nuevo: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700/50",
-    "en seguimiento": "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700/50",
-    contactado: "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700/50",
+    nuevo:
+      "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700/50",
+    "en seguimiento":
+      "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700/50",
+    contactado:
+      "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700/50",
   };
 
   // Colores para prioridades con soporte dark/light
   const prioridadColors = {
     alta: "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700/50",
-    media: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700/50",
+    media:
+      "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700/50",
     baja: "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600",
   };
 
@@ -128,7 +153,7 @@ export function DataTableToolbar({ table }) {
       fecha: new Date().toISOString().slice(0, 10),
       proyecto: "",
     };
-    
+
     table.options.data.unshift(newLead);
     table.setOptions({
       ...table.options,
@@ -177,6 +202,23 @@ export function DataTableToolbar({ table }) {
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
+                className="border-border hover:bg-accent"
+              >
+                <Filter className="h-4 w-4 mr-2" />
+                Exportar
+              </Button>
+
+              <Link href="/leads/kanban">
+                <Button
+                  variant="outline"
+                  className="border-primary/30 text-primary hover:bg-primary/10"
+                >
+                  <Kanban className="h-4 w-4 mr-2" />
+                  Ver Asignacion
+                </Button>
+              </Link>
+              <Button
+                variant="outline"
                 onClick={handleClearFilters}
                 disabled={!isFilteredState}
                 className="h-10 px-4 border-border hover:bg-accent text-foreground"
@@ -211,7 +253,9 @@ export function DataTableToolbar({ table }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Filtro por nombre */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Nombre</label>
+              <label className="text-sm font-medium text-foreground">
+                Nombre
+              </label>
               <Input
                 placeholder="Filtrar por nombre..."
                 value={table.getColumn("nombre")?.getFilterValue() ?? ""}
@@ -221,47 +265,45 @@ export function DataTableToolbar({ table }) {
                 className="h-9 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary"
               />
             </div>
-
-            {/* Filtro por email */}
+            {/* Filtro por teléfono */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Email</label>
+              <label className="text-sm font-medium text-foreground">
+                Teléfono
+              </label>
               <Input
-                placeholder="Filtrar por email..."
-                value={table.getColumn("email")?.getFilterValue() ?? ""}
+                placeholder="Filtrar por teléfono..."
+                value={table.getColumn("telefono")?.getFilterValue() ?? ""}
                 onChange={(event) =>
-                  table.getColumn("email")?.setFilterValue(event.target.value)
+                  table
+                    .getColumn("telefono")
+                    ?.setFilterValue(event.target.value)
                 }
                 className="h-9 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary"
               />
             </div>
-
-            {/* Filtro por proyecto */}
+            {/* Filtro por fuente */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Proyecto</label>
-              <Select
-                value={table.getColumn("proyecto")?.getFilterValue() ?? ""}
-                onValueChange={(value) =>
-                  table.getColumn("proyecto")?.setFilterValue(value)
+              <label className="text-sm font-medium text-foreground">
+                Fuente
+              </label>
+              <Input
+                placeholder="Filtrar por fuente..."
+                value={table.getColumn("fuente")?.getFilterValue() ?? ""}
+                onChange={(event) =>
+                  table.getColumn("fuente")?.setFilterValue(event.target.value)
                 }
-              >
-                <SelectTrigger className="h-9 border-border bg-background text-foreground focus:border-primary">
-                  <SelectValue placeholder="Todos los proyectos" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Todos los proyectos</SelectItem>
-                  {proyectos.map((proyecto) => (
-                    <SelectItem key={proyecto} value={proyecto}>
-                      {proyecto}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                className="h-9 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary"
+              />
             </div>
-
             {/* Filtro por fecha mejorado */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Fecha</label>
-              <DatePickers dateRange={dateRange} setDateRange={handleDateFilter} />
+              <label className="text-sm font-medium text-foreground">
+                Fecha
+              </label>
+              <DatePickers
+                dateRange={dateRange}
+                setDateRange={handleDateFilter}
+              />
             </div>
           </div>
 
@@ -269,7 +311,9 @@ export function DataTableToolbar({ table }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Filtro por estado */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Estado</label>
+              <label className="text-sm font-medium text-foreground">
+                Estado
+              </label>
               <div className="flex flex-wrap gap-2">
                 <Button
                   variant="outline"
@@ -277,8 +321,8 @@ export function DataTableToolbar({ table }) {
                   onClick={() => table.getColumn("estado")?.setFilterValue("")}
                   className={cn(
                     "h-8 text-xs border-border",
-                    !table.getColumn("estado")?.getFilterValue() 
-                      ? "bg-primary/10 border-primary/30 text-primary" 
+                    !table.getColumn("estado")?.getFilterValue()
+                      ? "bg-primary/10 border-primary/30 text-primary"
                       : "hover:bg-accent"
                   )}
                 >
@@ -289,7 +333,9 @@ export function DataTableToolbar({ table }) {
                     key={estado}
                     variant="outline"
                     size="sm"
-                    onClick={() => table.getColumn("estado")?.setFilterValue(estado)}
+                    onClick={() =>
+                      table.getColumn("estado")?.setFilterValue(estado)
+                    }
                     className={cn(
                       "h-8 text-xs border-border",
                       table.getColumn("estado")?.getFilterValue() === estado
@@ -297,7 +343,7 @@ export function DataTableToolbar({ table }) {
                         : "hover:bg-accent"
                     )}
                   >
-                    <Badge 
+                    <Badge
                       className={cn(
                         "mr-1 text-xs",
                         estadoColors[estado] || "bg-muted text-muted-foreground"
@@ -312,16 +358,20 @@ export function DataTableToolbar({ table }) {
 
             {/* Filtro por prioridad */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Prioridad</label>
+              <label className="text-sm font-medium text-foreground">
+                Prioridad
+              </label>
               <div className="flex flex-wrap gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => table.getColumn("prioridad")?.setFilterValue("")}
+                  onClick={() =>
+                    table.getColumn("prioridad")?.setFilterValue("")
+                  }
                   className={cn(
                     "h-8 text-xs border-border",
-                    !table.getColumn("prioridad")?.getFilterValue() 
-                      ? "bg-primary/10 border-primary/30 text-primary" 
+                    !table.getColumn("prioridad")?.getFilterValue()
+                      ? "bg-primary/10 border-primary/30 text-primary"
                       : "hover:bg-accent"
                   )}
                 >
@@ -332,18 +382,22 @@ export function DataTableToolbar({ table }) {
                     key={prioridad}
                     variant="outline"
                     size="sm"
-                    onClick={() => table.getColumn("prioridad")?.setFilterValue(prioridad)}
+                    onClick={() =>
+                      table.getColumn("prioridad")?.setFilterValue(prioridad)
+                    }
                     className={cn(
                       "h-8 text-xs border-border",
-                      table.getColumn("prioridad")?.getFilterValue() === prioridad
+                      table.getColumn("prioridad")?.getFilterValue() ===
+                        prioridad
                         ? "bg-primary/10 border-primary/30 text-primary"
                         : "hover:bg-accent"
                     )}
                   >
-                    <Badge 
+                    <Badge
                       className={cn(
                         "mr-1 text-xs",
-                        prioridadColors[prioridad] || "bg-muted text-muted-foreground"
+                        prioridadColors[prioridad] ||
+                          "bg-muted text-muted-foreground"
                       )}
                     >
                       {prioridad}

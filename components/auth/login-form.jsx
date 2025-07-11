@@ -11,21 +11,15 @@ import { signIn } from "next-auth/react";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import Image from "next/image";
 import { SiteLogo } from "@/components/svg";
 import { Icon } from "@iconify/react";
 import { Checkbox } from "@/components/ui/checkbox";
-
-import googleIcon from "@/public/images/auth/google.png";
-import facebook from "@/public/images/auth/facebook.png";
-import twitter from "@/public/images/auth/twitter.png";
-import GithubIcon from "@/public/images/auth/github.png";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 const schema = z.object({
-  email: z.string().email({ message: "Your email is invalid." }),
-  password: z.string().min(4),
+  email: z.string().email({ message: "El correo no es válido." }),
+  password: z.string().min(4, { message: "La contraseña debe tener al menos 4 caracteres." }),
 });
-import { useMediaQuery } from "@/hooks/use-media-query";
 
 const LogInForm = () => {
   const [isPending, startTransition] = React.useTransition();
@@ -64,7 +58,7 @@ const LogInForm = () => {
         redirect: false,
       });
       if (response?.ok) {
-        toast.success("Login Successful");
+        toast.success("Inicio de sesión exitoso");
         window.location.assign("/dashboard");
         reset();
       } else if (response?.error) {
@@ -75,18 +69,18 @@ const LogInForm = () => {
   return (
     <div className="w-full py-10">
       <Link href="/dashboard" className="inline-block">
-        <SiteLogo className="h-10 w-10 2xl:w-14 2xl:h-14 text-primary" />
+        <SiteLogo className="2xl:w-14 2xl:h-14 text-primary" />
       </Link>
       <div className="2xl:mt-8 mt-6 2xl:text-3xl text-2xl font-bold text-default-900">
-        Hey, Hello 👋
+        ¡Hola! 👋
       </div>
       <div className="2xl:text-lg text-base text-default-600 2xl:mt-2 leading-6">
-        Enter the information you entered while registering.
+        Ingresa los datos con los que te registraste.
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-5 2xl:mt-7">
         <div>
           <Label htmlFor="email" className="mb-2 font-medium text-default-600">
-            Email{" "}
+            Correo electrónico
           </Label>
           <Input
             disabled={isPending}
@@ -108,7 +102,7 @@ const LogInForm = () => {
             htmlFor="password"
             className="mb-2 font-medium text-default-600"
           >
-            Password{" "}
+            Contraseña
           </Label>
           <div className="relative">
             <Input
@@ -156,11 +150,11 @@ const LogInForm = () => {
               htmlFor="isRemebered"
               className="text-sm text-default-600 cursor-pointer whitespace-nowrap"
             >
-              Remember me
+              Recuérdame
             </Label>
           </div>
           <Link href="/auth/forgot" className="flex-none text-sm text-primary">
-            Forget Password?
+            ¿Olvidaste tu contraseña?
           </Link>
         </div>
         <Button
@@ -169,63 +163,9 @@ const LogInForm = () => {
           size={!isDesktop2xl ? "lg" : "md"}
         >
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isPending ? "Loading..." : "Sign In"}
+          {isPending ? "Cargando..." : "Iniciar sesión"}
         </Button>
       </form>
-      <div className="mt-6 xl:mt-8 flex flex-wrap justify-center gap-4">
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full  border-default-300 hover:bg-transparent"
-          disabled={isPending}
-          onClick={() =>
-            signIn("google", {
-              callbackUrl: "/dashboard",
-            })
-          }
-        >
-          <Image src={googleIcon} alt="google" className="w-5 h-5" />
-        </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full  border-default-300 hover:bg-transparent"
-          disabled={isPending}
-          onClick={() =>
-            signIn("github", {
-              callbackUrl: "/dashboard",
-              redirect: false,
-            })
-          }
-        >
-          <Image src={GithubIcon} alt="google" className="w-5 h-5" />
-        </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full border-default-300 hover:bg-transparent"
-        >
-          <Image src={facebook} alt="google" className="w-5 h-5" />
-        </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full  border-default-300 hover:bg-transparent"
-        >
-          <Image src={twitter} alt="google" className="w-5 h-5" />
-        </Button>
-      </div>
-      <div className="mt-5 2xl:mt-8 text-center text-base text-default-600">
-        Don't have an account?{" "}
-        <Link href="/auth/register" className="text-primary">
-          {" "}
-          Sign Up{" "}
-        </Link>
-      </div>
     </div>
   );
 };

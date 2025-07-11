@@ -19,6 +19,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove, useSortable } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
+import { updateLeadInFirebase } from "@/lib/firebase";
 
 // Componente para leads arrastrables
 const DraggableLead = ({ task, getPriorityColor, getStatusColor }) => {
@@ -184,158 +185,10 @@ const VendorCard = ({ board, tasks, getStatusColor }) => {
   );
 };
 
-const TaskBoard = ({ boards: initialBoards, tasks: initialTasks, subTasks, comments }) => {
-  // Datos ficticios de vendedores
-  const mockBoards = [
-    {
-      id: "vendor-1",
-      title: "María González",
-      avatar: "/avatars/maria.jpg",
-      email: "maria.gonzalez@somoslux.com",
-      phone: "+52 55 1234 5678",
-      status: "Activo",
-      leadsAssigned: 3
-    },
-    {
-      id: "vendor-2", 
-      title: "Carlos Rodríguez",
-      avatar: "/avatars/carlos.jpg",
-      email: "carlos.rodriguez@somoslux.com",
-      phone: "+52 55 2345 6789",
-      status: "Activo",
-      leadsAssigned: 1
-    },
-    {
-      id: "vendor-3",
-      title: "Ana Martínez",
-      avatar: "/avatars/ana.jpg", 
-      email: "ana.martinez@somoslux.com",
-      phone: "+52 55 3456 7890",
-      status: "Activo",
-      leadsAssigned: 2
-    },
-    {
-      id: "vendor-4",
-      title: "Luis Fernández",
-      avatar: "/avatars/luis.jpg",
-      email: "luis.fernandez@somoslux.com", 
-      phone: "+52 55 4567 8901",
-      status: "Activo",
-      leadsAssigned: 0
-    }
-  ];
-
-  // Datos ficticios de leads pendientes
-  const mockTasks = [
-    {
-      id: "lead-1",
-      name: "Roberto Silva",
-      email: "roberto.silva@email.com",
-      phone: "+52 55 1111 2222",
-      avatar: "/avatars/roberto.jpg",
-      status: "Nuevo",
-      source: "Facebook",
-      priority: "Alta",
-      description: "Interesado en departamentos en Polanco, presupuesto $2.5M - $3.5M",
-      createdAt: "2024-01-15T10:30:00Z",
-      boardId: null
-    },
-    {
-      id: "lead-2",
-      name: "Patricia López",
-      email: "patricia.lopez@email.com", 
-      phone: "+52 55 2222 3333",
-      avatar: "/avatars/patricia.jpg",
-      status: "Caliente",
-      source: "Instagram",
-      priority: "Urgente",
-      description: "Busca casa en Lomas de Chapultepec, 3-4 recámaras, jardín",
-      createdAt: "2024-01-15T09:15:00Z",
-      boardId: null
-    },
-    {
-      id: "lead-3",
-      name: "Fernando Herrera",
-      email: "fernando.herrera@email.com",
-      phone: "+52 55 3333 4444", 
-      avatar: "/avatars/fernando.jpg",
-      status: "Nuevo",
-      source: "Website",
-      priority: "Media",
-      description: "Interesado en inversión inmobiliaria, busca departamentos para rentar",
-      createdAt: "2024-01-15T08:45:00Z",
-      boardId: null
-    },
-    {
-      id: "lead-4",
-      name: "Carmen Vega",
-      email: "carmen.vega@email.com",
-      phone: "+52 55 4444 5555",
-      avatar: "/avatars/carmen.jpg", 
-      status: "Caliente",
-      source: "Referido",
-      priority: "Alta",
-      description: "Familia buscando casa en Coyoacán, 4 recámaras, presupuesto $4M",
-      createdAt: "2024-01-15T07:30:00Z",
-      boardId: null
-    },
-    {
-      id: "lead-5",
-      name: "Miguel Torres",
-      email: "miguel.torres@email.com",
-      phone: "+52 55 5555 6666",
-      avatar: "/avatars/miguel.jpg",
-      status: "Nuevo", 
-      source: "Google Ads",
-      priority: "Media",
-      description: "Ejecutivo buscando departamento en Santa Fe, 2 recámaras, moderno",
-      createdAt: "2024-01-15T06:20:00Z",
-      boardId: null
-    },
-    {
-      id: "lead-6",
-      name: "Sofia Mendoza",
-      email: "sofia.mendoza@email.com",
-      phone: "+52 55 6666 7777",
-      avatar: "/avatars/sofia.jpg",
-      status: "Caliente",
-      source: "Facebook",
-      priority: "Urgente", 
-      description: "Urgente: necesita casa en 2 semanas, Condesa, 3 recámaras",
-      createdAt: "2024-01-15T05:10:00Z",
-      boardId: null
-    },
-    {
-      id: "lead-7",
-      name: "Diego Ruiz",
-      email: "diego.ruiz@email.com",
-      phone: "+52 55 7777 8888",
-      avatar: "/avatars/diego.jpg",
-      status: "Nuevo",
-      source: "Instagram",
-      priority: "Media",
-      description: "Interesado en propiedades de lujo en Las Lomas",
-      createdAt: "2024-01-15T04:30:00Z",
-      boardId: null
-    },
-    {
-      id: "lead-8",
-      name: "Valeria Castro",
-      email: "valeria.castro@email.com",
-      phone: "+52 55 8888 9999",
-      avatar: "/avatars/valeria.jpg",
-      status: "Caliente",
-      source: "Website",
-      priority: "Alta",
-      description: "Busca departamento en Roma Norte, 2 recámaras, con terraza",
-      createdAt: "2024-01-15T03:45:00Z",
-      boardId: null
-    }
-  ];
-
-  // Usa los vendedores de prueba
-  const boards = mockBoards;
-  const [tasks, setTasks] = useState(initialTasks?.length > 0 ? initialTasks : mockTasks);
+const TaskBoard = ({ boards, tasks, subTasks, comments }) => {
+  // Eliminar mockBoards y mockTasks
+  // const boards = mockBoards;
+  // const [tasks, setTasks] = useState(initialTasks?.length > 0 ? initialTasks : mockTasks);
   const [activeTask, setActiveTask] = useState(null);
 
   // Separar leads sin asignar y vendedores
@@ -356,7 +209,7 @@ const TaskBoard = ({ boards: initialBoards, tasks: initialTasks, subTasks, comme
     }
   };
 
-  const handleDragEnd = (event) => {
+  const handleDragEnd = async (event) => {
     const { active, over } = event;
     
     if (!over) {
@@ -372,12 +225,8 @@ const TaskBoard = ({ boards: initialBoards, tasks: initialTasks, subTasks, comme
       if (!task) return;
       if (task.boardId === overBoardId) return;
 
-      // Actualizar boardId del lead
-      setTasks((prev) =>
-        prev.map((t) =>
-          t.id === activeTaskId ? { ...t, boardId: overBoardId } : t
-        )
-      );
+      // Actualizar en Firebase
+      await updateLeadInFirebase(activeTaskId, { boardId: overBoardId });
       
       const assignedVendor = boards.find(b => b.id === overBoardId);
       toast.success(`Lead asignado a ${assignedVendor?.title || 'vendedor'}`);
@@ -412,12 +261,6 @@ const TaskBoard = ({ boards: initialBoards, tasks: initialTasks, subTasks, comme
 
   return (
     <div className="space-y-6">
-      {/* Botón para resetear leads de prueba */}
-      <div className="flex justify-end">
-        <Button variant="outline" onClick={() => setTasks(mockTasks)}>
-          Resetear Leads de Prueba
-        </Button>
-      </div>
       {/* Header con estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="border-0 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/50">

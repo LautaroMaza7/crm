@@ -110,8 +110,8 @@ export function DataTableStats({ data, filteredData }) {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {proyectosStats.map((proyecto) => (
-              <div key={proyecto.nombre} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+            {proyectosStats.map((proyecto, idx) => (
+              <div key={proyecto.nombre || idx} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                 <div className="flex items-center gap-3">
                   <Target className="h-5 w-5 text-primary" />
                   <div>
@@ -124,58 +124,6 @@ export function DataTableStats({ data, filteredData }) {
                 </Badge>
               </div>
             ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Distribución de estados */}
-      <Card className="border border-border">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
-            Distribución de Estados
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                <span className="font-medium text-foreground">Nuevos</span>
-              </div>
-              <div className="text-right">
-                <p className="font-bold text-foreground">{stats.nuevos}</p>
-                <p className="text-sm text-muted-foreground">
-                  {((stats.nuevos / totalLeads) * 100).toFixed(1)}%
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between p-3 bg-yellow-50 dark:bg-yellow-950/30 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <span className="font-medium text-foreground">En Seguimiento</span>
-              </div>
-              <div className="text-right">
-                <p className="font-bold text-foreground">{stats.enSeguimiento}</p>
-                <p className="text-sm text-muted-foreground">
-                  {((stats.enSeguimiento / totalLeads) * 100).toFixed(1)}%
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-950/30 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="font-medium text-foreground">Contactados</span>
-              </div>
-              <div className="text-right">
-                <p className="font-bold text-foreground">{stats.contactados}</p>
-                <p className="text-sm text-muted-foreground">
-                  {((stats.contactados / totalLeads) * 100).toFixed(1)}%
-                </p>
-              </div>
-            </div>
           </div>
         </CardContent>
       </Card>

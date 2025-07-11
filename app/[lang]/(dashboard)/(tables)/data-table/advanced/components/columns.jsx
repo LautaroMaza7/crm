@@ -52,33 +52,35 @@ export const columns = [
       <DataTableColumnHeader column={column} title="Nombre" />
     ),
     cell: ({ row }) => (
-      <div className="flex flex-col">
-        <span className="font-semibold text-foreground">{row.getValue("nombre")}</span>
-        <span className="text-xs text-muted-foreground">{row.getValue("email")}</span>
+      <div className="flex items-center gap-2">
+        {row.original.avatar && (
+          <img src={row.original.avatar} alt="" className="w-8 h-8 rounded-full" />
+        )}
+        <div>
+          <span className="font-semibold text-foreground">{row.getValue("nombre")}</span>
+          <span className="block text-xs text-muted-foreground">{row.getValue("email")}</span>
+        </div>
       </div>
     ),
   },
   {
     accessorKey: "telefono",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Contacto" />
+      <DataTableColumnHeader column={column} title="Teléfono" />
     ),
     cell: ({ row }) => (
-      <div className="flex flex-col">
-        <span className="font-medium text-foreground">{row.getValue("telefono")}</span>
-        <span className="text-xs text-muted-foreground">{row.getValue("email")}</span>
-      </div>
+      <span className="font-medium text-foreground">{row.getValue("telefono")}</span>
     ),
   },
   {
-    accessorKey: "mensaje",
+    accessorKey: "descripcion",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Mensaje" />
+      <DataTableColumnHeader column={column} title="Descripción" />
     ),
     cell: ({ row }) => (
       <div className="max-w-[300px]">
         <p className="text-sm text-foreground line-clamp-2">
-          {row.getValue("mensaje")}
+          {row.getValue("descripcion")}
         </p>
       </div>
     ),
@@ -91,11 +93,10 @@ export const columns = [
     cell: ({ row }) => {
       const estado = row.getValue("estado");
       const estadoColors = {
-        nuevo: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700/50",
-        "en seguimiento": "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700/50",
-        contactado: "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700/50",
+        Nuevo: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700/50",
+        "En seguimiento": "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700/50",
+        Contactado: "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700/50",
       };
-      
       return (
         <Badge 
           className={cn(
@@ -116,11 +117,10 @@ export const columns = [
     cell: ({ row }) => {
       const prioridad = row.getValue("prioridad");
       const prioridadColors = {
-        alta: "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700/50",
-        media: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700/50",
-        baja: "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600",
+        Alta: "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700/50",
+        Media: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700/50",
+        Baja: "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600",
       };
-      
       return (
         <Badge 
           className={cn(
@@ -134,35 +134,38 @@ export const columns = [
     },
   },
   {
-    accessorKey: "proyecto",
+    accessorKey: "fuente",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Proyecto" />
+      <DataTableColumnHeader column={column} title="Fuente" />
     ),
     cell: ({ row }) => (
-      <div className="flex flex-col">
-        <span className="font-medium text-foreground">{row.getValue("proyecto")}</span>
-        <span className="text-xs text-muted-foreground">{row.getValue("origen")}</span>
-      </div>
+      <span className="text-xs text-muted-foreground">{row.getValue("fuente")}</span>
     ),
   },
   {
-    accessorKey: "fecha",
+    accessorKey: "email",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Email" />
+    ),
+    cell: ({ row }) => (
+      <span className="text-xs text-muted-foreground">{row.getValue("email")}</span>
+    ),
+    enableHiding: true,
+    enableSorting: false,
+  },
+  {
+    accessorKey: "createdAt",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Fecha" />
     ),
     cell: ({ row }) => {
-      const fecha = row.getValue("fecha");
+      const fecha = row.getValue("createdAt");
       try {
         const date = new Date(fecha);
         return (
-          <div className="flex flex-col">
-            <span className="font-medium text-foreground">
-              {format(date, "dd/MM/yyyy", { locale: es })}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              {format(date, "EEEE", { locale: es })}
-            </span>
-          </div>
+          <span className="font-medium text-foreground">
+            {format(date, "dd/MM/yyyy", { locale: es })}
+          </span>
         );
       } catch {
         return <span className="text-muted-foreground">{fecha}</span>;

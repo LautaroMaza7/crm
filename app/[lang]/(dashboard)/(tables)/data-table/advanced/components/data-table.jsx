@@ -25,6 +25,7 @@ import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { DataTableStats } from "./data-table-stats";
 import { cn } from "@/lib/utils";
+import { updateLeadInFirebase } from "@/lib/firebase";
 
 export function DataTable({ columns, data }) {
   const [rowSelection, setRowSelection] = React.useState({});
@@ -32,6 +33,8 @@ export function DataTable({ columns, data }) {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [sorting, setSorting] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
+  const [massEdit, setMassEdit] = React.useState({ estado: "", prioridad: "" });
+  const [isUpdating, setIsUpdating] = React.useState(false);
 
   const table = useReactTable({
     data,
@@ -58,30 +61,95 @@ export function DataTable({ columns, data }) {
     globalFilterFn: "includesString",
   });
 
-  const filteredData = table.getFilteredRowModel().rows.map(row => row.original);
+  const filteredData = table
+    .getFilteredRowModel()
+    .rows.map((row) => row.original);
+  const selectedRows = table.getSelectedRowModel().rows;
+  const selectedLeads = selectedRows.map((row) => row.original);
 
   return (
     <div className="space-y-6">
       {/* Estadísticas */}
       <DataTableStats data={data} filteredData={filteredData} />
-      
+
       {/* Toolbar y tabla */}
       <div className="space-y-4">
         <DataTableToolbar table={table} />
+        {/* Barra de acciones masivas */}
+        {selectedLeads.length > 0 && (
+          <div className="flex items-center gap-4 p-4 bg-primary/10 border border-primary rounded mb-4 z-50">
+            <span className="font-medium">
+              {selectedLeads.length} seleccionados
+            </span>
+            <select
+              className="border rounded px-2 py-1"
+              value={massEdit.estado}
+              onChange={(e) =>
+                setMassEdit((m) => ({ ...m, estado: e.target.value }))
+              }
+            >
+              <option value="">Cambiar estado</option>
+              <option value="nuevo">Nuevo</option>
+              <option value="en seguimiento">En seguimiento</option>
+              <option value="contactado">Contactado</option>
+            </select>
+            <select
+              className="border rounded px-2 py-1"
+              value={massEdit.prioridad}
+              onChange={(e) =>
+                setMassEdit((m) => ({ ...m, prioridad: e.target.value }))
+              }
+            >
+              <option value="">Cambiar prioridad</option>
+              <option value="alta">Alta</option>
+              <option value="media">Media</option>
+              <option value="baja">Baja</option>
+            </select>
+            <button
+              className="bg-primary text-white px-4 py-2 rounded disabled:opacity-50"
+              onClick={async () => {
+                setIsUpdating(true);
+                for (const lead of selectedLeads) {
+                  const updates = {};
+                  if (massEdit.estado) updates.estado = massEdit.estado;
+                  if (massEdit.prioridad)
+                    updates.prioridad = massEdit.prioridad;
+                  if (Object.keys(updates).length > 0) {
+                    await updateLeadInFirebase(lead.id, updates);
+                  }
+                }
+                setIsUpdating(false);
+                table.resetRowSelection();
+                setMassEdit({ estado: "", prioridad: "" });
+                // Aquí podrías refrescar los datos si es necesario
+              }}
+              disabled={isUpdating || (!massEdit.estado && !massEdit.prioridad)}
+            >
+              {isUpdating ? "Actualizando..." : "Aplicar cambios"}
+            </button>
+          </div>
+        )}
         <div className="rounded-md border border-border bg-card shadow-sm">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="bg-muted/50 hover:bg-muted/50">
+                <TableRow
+                  key={headerGroup.id}
+                  className="bg-muted/50 hover:bg-muted/50"
+                >
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id} colSpan={header.colSpan} className="font-semibold text-foreground">
+                      <TableHead
+                        key={header.id}
+                        colSpan={header.colSpan}
+                        className="font-semibold text-foreground"
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                       </TableHead>
                     );
                   })}
