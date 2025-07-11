@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
-import { signIn } from "next-auth/react";
+import { loginWithEmail } from "@/lib/firebase";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -52,24 +52,24 @@ const LogInForm = () => {
 
   const onSubmit = (data) => {
     startTransition(async () => {
-      let response = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-      if (response?.ok) {
+      try {
+        await loginWithEmail(data.email, data.password);
         toast.success("Inicio de sesión exitoso");
         window.location.assign("/dashboard");
         reset();
-      } else if (response?.error) {
-        toast.error(response?.error);
+      } catch (error) {
+        let msg = "Error al iniciar sesión";
+        if (error.code === "auth/user-not-found") msg = "Usuario no encontrado.";
+        else if (error.code === "auth/wrong-password") msg = "Contraseña incorrecta.";
+        else if (error.code === "auth/invalid-email") msg = "Correo inválido.";
+        toast.error(msg);
       }
     });
   };
   return (
     <div className="w-full py-10">
       <Link href="/dashboard" className="inline-block">
-        <SiteLogo className="2xl:w-14 2xl:h-14 text-primary" />
+        <SiteLogo className="text-primary" />
       </Link>
       <div className="2xl:mt-8 mt-6 2xl:text-3xl text-2xl font-bold text-default-900">
         ¡Hola! 👋

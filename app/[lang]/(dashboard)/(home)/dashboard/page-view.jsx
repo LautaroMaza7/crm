@@ -30,7 +30,7 @@ const DashboardPageView = ({ trans }) => {
           <UsersStat />
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <ReportsArea />
         </div>
@@ -56,7 +56,7 @@ const DashboardPageView = ({ trans }) => {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
       {/* <div className="col-span-2">
         <Card>
           <CardHeader className="border-none pb-0">
@@ -74,7 +74,7 @@ const DashboardPageView = ({ trans }) => {
           </CardContent>
         </Card>
       </div> */}
-      <div className="grid grid-cols-12 gap-6">
+      {/* <div className="grid grid-cols-12 gap-6">
         <div className="col-span-12 lg:col-span-4">
           <TopTen />
         </div>
@@ -88,7 +88,7 @@ const DashboardPageView = ({ trans }) => {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -7,6 +7,7 @@ import { ReactToaster } from "@/components/ui/toaster";
 import { Toaster } from "react-hot-toast";
 import { SonnToaster } from "@/components/ui/sonner";
 import { usePathname } from "next/navigation";
+import AuthProvider from "./auth.provider";
 
 const inter = Inter({ subsets: ["latin"] });
 const Providers = ({ children }) => {
@@ -21,12 +22,11 @@ const Providers = ({ children }) => {
           enableSystem={false}
           defaultTheme="light"
         >
-          <div className={cn("h-full  ")}>
-            {children}
-            <ReactToaster />
-          </div>
-          <Toaster />
-          <SonnToaster />
+          <AuthProvider>
+            <div className={cn("h-full  ")}>{children}<ReactToaster /></div>
+            <Toaster />
+            <SonnToaster />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     );
@@ -43,12 +43,11 @@ const Providers = ({ children }) => {
         enableSystem={false}
         defaultTheme="light"
       >
-        <div className={cn("h-full  ")}>
-          {children}
-          <ReactToaster />
-        </div>
-        <Toaster />
-        <SonnToaster />
+        <AuthProvider>
+          <div className={cn("h-full  ")}>{children}<ReactToaster /></div>
+          <Toaster />
+          <SonnToaster />
+        </AuthProvider>
       </ThemeProvider>
     </body>
   );

@@ -129,8 +129,8 @@ export function DataTable({ columns, data }) {
             </button>
           </div>
         )}
-        <div className="rounded-md border border-border bg-card shadow-sm">
-          <Table>
+        <div className="rounded-md border border-border bg-card shadow-sm overflow-x-auto">
+          <Table className="min-w-full">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow

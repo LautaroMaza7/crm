@@ -1,5 +1,5 @@
 "use client";
-import { useSession, signOut } from "next-auth/react";
+import { useAuth } from "@/provider/auth.provider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,47 +14,31 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Icon } from "@iconify/react";
-import Image from "next/image";
 import Link from "next/link";
 
 const ProfileInfo = () => {
-  const { data: session } = useSession();
+  const { user, logout } = useAuth();
+  if (!user) return null;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className=" cursor-pointer">
         <div className=" flex items-center  ">
-          {session?.user?.image && (
-            <Image
-              src={session?.user?.image}
-              alt={session?.user?.name ?? ""}
-              width={36}
-              height={36}
-              className="rounded-full"
-            />
-          )}
+          {/* Puedes agregar un avatar por defecto si quieres */}
+          <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold uppercase">
+            {user.displayName?.[0] || user.email?.[0] || "U"}
+          </div>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 p-0" align="end">
         <DropdownMenuLabel className="flex gap-2 items-center mb-1 p-3">
-          {session?.user?.image && (
-            <Image
-              src={session?.user?.image}
-              alt={session?.user?.name ?? ""}
-              width={36}
-              height={36}
-              className="rounded-full"
-            />
-          )}
+          <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold uppercase">
+            {user.displayName?.[0] || user.email?.[0] || "U"}
+          </div>
           <div>
             <div className="text-sm font-medium text-default-800 capitalize ">
-              {session?.user?.name ?? "Admin"}
+              {user.displayName || user.email?.split("@")[0] || "Usuario"}
             </div>
-            <Link
-              href="/dashboard"
-              className="text-xs text-default-600 hover:text-primary"
-            >
-              @admin
-            </Link>
+            <div className="text-xs text-default-600">{user.email}</div>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuGroup>
@@ -62,14 +46,13 @@ const ProfileInfo = () => {
             {
               name: "Perfil",
               icon: "heroicons:user",
-              href:"/user-profile"
+              href: "/dashboard",
             },
             {
-              name: "Configuracion",
+              name: "Configuración",
               icon: "heroicons:paper-airplane",
-              href:"/dashboard"
+              href: "/dashboard",
             },
-            
           ].map((item, index) => (
             <Link
               href={item.href}
@@ -86,7 +69,7 @@ const ProfileInfo = () => {
         <DropdownMenuSeparator />
         <DropdownMenuSeparator className="mb-0 dark:bg-background" />
         <DropdownMenuItem
-          onSelect={() => signOut()}
+          onSelect={logout}
           className="flex items-center gap-2 text-sm font-medium text-default-600 capitalize my-1 px-3 dark:hover:bg-background cursor-pointer"
         >
           <Icon icon="heroicons:power" className="w-4 h-4" />

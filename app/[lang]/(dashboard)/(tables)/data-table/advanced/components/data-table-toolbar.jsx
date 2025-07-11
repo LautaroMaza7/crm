@@ -186,32 +186,32 @@ export function DataTableToolbar({ table }) {
       {/* Búsqueda global y acciones principales */}
       <Card className="border border-border bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900/50 dark:to-gray-900/50">
         <CardContent className="p-4">
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4 md:gap-6">
             {/* Búsqueda global */}
-            <div className="relative flex-1 min-w-[300px]">
+            <div className="relative flex-1 min-w-[200px] w-full md:w-auto">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Buscar en todos los campos..."
                 value={globalFilter}
                 onChange={(event) => handleGlobalFilter(event.target.value)}
-                className="pl-10 h-10 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary"
+                className="pl-10 h-10 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary w-full"
               />
             </div>
 
             {/* Botones de acción */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap gap-2 w-full md:w-auto justify-start md:justify-end">
               <Button
                 variant="outline"
-                className="border-border hover:bg-accent"
+                className="border-border hover:bg-accent w-full md:w-auto"
               >
                 <Filter className="h-4 w-4 mr-2" />
                 Exportar
               </Button>
 
-              <Link href="/leads/kanban">
+              <Link href="/leads/kanban" className="w-full md:w-auto">
                 <Button
                   variant="outline"
-                  className="border-primary/30 text-primary hover:bg-primary/10"
+                  className="border-primary/30 text-primary hover:bg-primary/10 w-full md:w-auto"
                 >
                   <Kanban className="h-4 w-4 mr-2" />
                   Ver Asignacion
@@ -221,7 +221,7 @@ export function DataTableToolbar({ table }) {
                 variant="outline"
                 onClick={handleClearFilters}
                 disabled={!isFilteredState}
-                className="h-10 px-4 border-border hover:bg-accent text-foreground"
+                className="h-10 px-4 border-border hover:bg-accent text-foreground w-full md:w-auto"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Limpiar
@@ -229,12 +229,14 @@ export function DataTableToolbar({ table }) {
               <Button
                 variant="default"
                 onClick={handleAddLead}
-                className="h-10 px-4 bg-primary hover:bg-primary/90 text-primary-foreground"
+                className="h-10 px-4 bg-primary hover:bg-primary/90 text-primary-foreground w-full md:w-auto"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Nuevo Lead
               </Button>
-              <DataTableViewOptions table={table} />
+              <div className="w-full md:w-auto">
+                <DataTableViewOptions table={table} />
+              </div>
             </div>
           </div>
         </CardContent>
@@ -252,7 +254,7 @@ export function DataTableToolbar({ table }) {
           {/* Primera fila de filtros */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Filtro por nombre */}
-            <div className="space-y-2">
+            <div className="space-y-2 w-full">
               <label className="text-sm font-medium text-foreground">
                 Nombre
               </label>
@@ -262,11 +264,11 @@ export function DataTableToolbar({ table }) {
                 onChange={(event) =>
                   table.getColumn("nombre")?.setFilterValue(event.target.value)
                 }
-                className="h-9 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary"
+                className="h-9 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary w-full"
               />
             </div>
             {/* Filtro por teléfono */}
-            <div className="space-y-2">
+            <div className="space-y-2 w-full">
               <label className="text-sm font-medium text-foreground">
                 Teléfono
               </label>
@@ -278,11 +280,11 @@ export function DataTableToolbar({ table }) {
                     .getColumn("telefono")
                     ?.setFilterValue(event.target.value)
                 }
-                className="h-9 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary"
+                className="h-9 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary w-full"
               />
             </div>
             {/* Filtro por fuente */}
-            <div className="space-y-2">
+            <div className="space-y-2 w-full">
               <label className="text-sm font-medium text-foreground">
                 Fuente
               </label>
@@ -292,11 +294,11 @@ export function DataTableToolbar({ table }) {
                 onChange={(event) =>
                   table.getColumn("fuente")?.setFilterValue(event.target.value)
                 }
-                className="h-9 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary"
+                className="h-9 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary w-full"
               />
             </div>
             {/* Filtro por fecha mejorado */}
-            <div className="space-y-2">
+            <div className="space-y-2 w-full">
               <label className="text-sm font-medium text-foreground">
                 Fecha
               </label>
@@ -310,7 +312,7 @@ export function DataTableToolbar({ table }) {
           {/* Segunda fila de filtros */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Filtro por estado */}
-            <div className="space-y-2">
+            <div className="space-y-2 w-full">
               <label className="text-sm font-medium text-foreground">
                 Estado
               </label>
@@ -357,7 +359,7 @@ export function DataTableToolbar({ table }) {
             </div>
 
             {/* Filtro por prioridad */}
-            <div className="space-y-2">
+            <div className="space-y-2 w-full">
               <label className="text-sm font-medium text-foreground">
                 Prioridad
               </label>

@@ -1,20 +1,27 @@
+"use client";
 import DashBoardLayoutProvider from "@/provider/dashboard.layout.provider";
-import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { getDictionary } from "@/app/dictionaries";
-const layout = async ({ children, params: { lang } }) => {
-  const session = await getServerSession(authOptions);
+import { useAuth } from "@/provider/auth.provider";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-  if (!session?.user?.email) {
-    redirect("/auth/login");
+const Layout = ({ children, params: { lang } }) => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/auth/login");
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user) {
+    return <div className="w-full h-screen flex items-center justify-center text-lg text-muted-foreground">Cargando sesión...</div>;
   }
 
-  const trans = await getDictionary(lang);
-
+  // Puedes agregar aquí la lógica de traducción si lo necesitas
   return (
-    <DashBoardLayoutProvider trans={trans}>{children}</DashBoardLayoutProvider>
+    <DashBoardLayoutProvider>{children}</DashBoardLayoutProvider>
   );
 };
 
-export default layout;
+export default Layout;

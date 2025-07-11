@@ -260,9 +260,9 @@ const TaskBoard = ({ boards, tasks, subTasks, comments }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-x-auto">
       {/* Header con estadísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 min-w-[600px] md:min-w-0">
         <Card className="border-0 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -328,7 +328,7 @@ const TaskBoard = ({ boards, tasks, subTasks, comments }) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 min-w-[400px] md:min-w-0">
               <SortableContext items={unassignedLeads.map(task => task.id)}>
                 {unassignedLeads.map((task) => (
                   <DraggableLead 
@@ -356,7 +356,7 @@ const TaskBoard = ({ boards, tasks, subTasks, comments }) => {
         </Card>
 
         {/* Vendedores */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 min-w-[400px] md:min-w-0">
           {boards.map((board) => (
             <VendorCard 
               key={board.id} 
