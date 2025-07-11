@@ -130,7 +130,7 @@ export function DataTable({ columns, data }) {
           </div>
         )}
         <div className="rounded-md border border-border bg-card shadow-sm overflow-x-auto">
-          <Table className="min-w-full">
+          <Table className="min-w-[600px] sm:min-w-full">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow

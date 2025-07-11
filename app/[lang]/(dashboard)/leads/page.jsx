@@ -31,21 +31,23 @@ export default function LeadsPage() {
       </div>
 
       {/* Tabla principal */}
-      <Card className="border border-border shadow-sm">
-        <CardHeader className="border-b border-border bg-muted/50">
-          <CardTitle className="text-xl font-semibold text-foreground flex items-center gap-2">
-            <Users className="h-5 w-5 text-primary" />
-            Lista de Leads
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
-          {loading ? (
-            <div className="p-8 text-center text-muted-foreground">Cargando leads...</div>
-          ) : (
-            <DataTable data={leads} columns={columns} />
-          )}
-        </CardContent>
-      </Card>
+      <div className="w-full overflow-x-auto">
+        <Card className="border border-border shadow-sm min-w-[600px] sm:min-w-0">
+          <CardHeader className="border-b border-border bg-muted/50">
+            <CardTitle className="text-xl font-semibold text-foreground flex items-center gap-2">
+              <Users className="h-5 w-5 text-primary" />
+              Lista de Leads
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            {loading ? (
+              <div className="p-8 text-center text-muted-foreground">Cargando leads...</div>
+            ) : (
+              <DataTable data={leads} columns={columns} />
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 } 
