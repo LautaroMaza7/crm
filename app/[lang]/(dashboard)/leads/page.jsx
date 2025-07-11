@@ -14,9 +14,11 @@ import {
   Share2
 } from "lucide-react";
 import { useLeads } from "@/hooks/useLeads";
+import { useResponsiveColumns } from "../(tables)/data-table/advanced/components/columns";
 
 export default function LeadsPage() {
   const { leads, loading } = useLeads();
+  const columns = useResponsiveColumns();
   return (
     <div className="space-y-6">
       {/* Header con título y acciones */}

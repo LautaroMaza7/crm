@@ -115,10 +115,8 @@ export function useResponsiveColumns() {
 
   if (!isMobile) {
     // En desktop, usar las columnas originales
-    return columns;
+    return baseColumns;
   }
   // En mobile, solo mostrar las columnas esenciales y el botón de más
   return baseColumns;
 }
-
-export const columns = useResponsiveColumns();
