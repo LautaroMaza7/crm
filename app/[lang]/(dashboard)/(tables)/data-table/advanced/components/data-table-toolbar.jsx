@@ -23,6 +23,55 @@ import { Calendar as CalendarIcon } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+// Componente para seleccionar fechas individuales (Desde y Hasta) usando react-datepicker
+function DatePickers({ dateRange, setDateRange }) {
+  return (
+    <div className="flex gap-2 items-end">
+      <div>
+        <label className="block text-xs mb-1">Desde</label>
+        <ReactDatePicker
+          selected={dateRange.from}
+          onChange={date => setDateRange(r => ({ ...r, from: date }))}
+          selectsStart
+          startDate={dateRange.from}
+          endDate={dateRange.to}
+          dateFormat="dd/MM/yyyy"
+          placeholderText="Desde"
+          className="h-9 w-[120px] rounded border border-border bg-background text-foreground px-2"
+          locale={es}
+        />
+      </div>
+      <div>
+        <label className="block text-xs mb-1">Hasta</label>
+        <ReactDatePicker
+          selected={dateRange.to}
+          onChange={date => setDateRange(r => ({ ...r, to: date }))}
+          selectsEnd
+          startDate={dateRange.from}
+          endDate={dateRange.to}
+          minDate={dateRange.from}
+          dateFormat="dd/MM/yyyy"
+          placeholderText="Hasta"
+          className="h-9 w-[120px] rounded border border-border bg-background text-foreground px-2"
+          locale={es}
+        />
+      </div>
+      {(dateRange.from || dateRange.to) && (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setDateRange({ from: undefined, to: undefined })}
+          title="Limpiar filtro de fecha"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      )}
+    </div>
+  );
+}
 
 export function DataTableToolbar({ table }) {
   const [globalFilter, setGlobalFilter] = useState("");
@@ -103,27 +152,8 @@ export function DataTableToolbar({ table }) {
 
   // Handler para filtro de fecha
   const handleDateFilter = (range) => {
-    if (range?.from) {
-      setDateRange(range);
-      // Aquí podrías implementar el filtro de fecha en la tabla
-      // Por ejemplo, filtrar por fecha de creación
-      console.log("Filtro de fecha aplicado:", range);
-    }
-  };
-
-  // Función para formatear el texto del botón de fecha
-  const getDateButtonText = () => {
-    if (dateRange.from && dateRange.to) {
-      return `${format(dateRange.from, "dd/MM/yyyy", { locale: es })} - ${format(dateRange.to, "dd/MM/yyyy", { locale: es })}`;
-    } else if (dateRange.from) {
-      return format(dateRange.from, "dd/MM/yyyy", { locale: es });
-    }
-    return "Seleccionar fechas";
-  };
-
-  // Función para limpiar el filtro de fecha
-  const clearDateFilter = () => {
-    setDateRange({ from: undefined, to: undefined });
+    setDateRange(range);
+    // Aquí podrías implementar el filtro de fecha en la tabla si lo deseas
   };
 
   return (
@@ -228,78 +258,10 @@ export function DataTableToolbar({ table }) {
               </Select>
             </div>
 
-            {/* Filtro por fecha */}
+            {/* Filtro por fecha mejorado */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">Fecha</label>
-              <div className="flex gap-2">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "h-9 flex-1 justify-start text-left font-normal border-border bg-background text-foreground relative",
-                        !dateRange.from && "text-muted-foreground",
-                        dateRange.from && "filter-button-active"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {getDateButtonText()}
-                      {dateRange.from && (
-                        <div className="filter-indicator"></div>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 calendar-popover" align="start">
-                    <div className="calendar-filter">
-                      <Calendar
-                        initialFocus
-                        mode="range"
-                        defaultMonth={dateRange.from}
-                        selected={dateRange}
-                        onSelect={handleDateFilter}
-                        numberOfMonths={2}
-                        locale={es}
-                      />
-                    </div>
-                    {/* Botones de acción para el calendario */}
-                    <div className="calendar-actions">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={clearDateFilter}
-                        className="text-xs"
-                      >
-                        Limpiar
-                      </Button>
-                      <Button
-                        variant="default"
-                        size="sm"
-                        onClick={() => {
-                          // Cerrar el popover manualmente
-                          const popoverTrigger = document.querySelector('[data-state="open"]');
-                          if (popoverTrigger) {
-                            popoverTrigger.click();
-                          }
-                        }}
-                        className="text-xs"
-                      >
-                        Aplicar
-                      </Button>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-                {dateRange.from && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={clearDateFilter}
-                    className="clear-filter-button"
-                    title="Limpiar filtro de fecha"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
+              <DatePickers dateRange={dateRange} setDateRange={handleDateFilter} />
             </div>
           </div>
 

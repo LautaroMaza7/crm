@@ -39,7 +39,7 @@ export default function LeadsPage() {
             <Share2 className="h-4 w-4 mr-2" />
             Compartir
           </Button>
-          <Link href="/es/leads/kanban">
+          <Link href="/leads/kanban">
             <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/10">
               <Kanban className="h-4 w-4 mr-2" />
               Ver Kanban
