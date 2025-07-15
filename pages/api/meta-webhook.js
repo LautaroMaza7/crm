@@ -1,7 +1,7 @@
 import { db } from "@/lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
 
-const VERIFY_TOKEN = "lautileads2024"; // El mismo que pusiste en Meta
+const VERIFY_TOKEN = "tucscrm2024";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
