@@ -1,5 +1,4 @@
-import { db } from "@/lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { saveLeadToFirebase } from "@/lib/firebase";
 
 const VERIFY_TOKEN = "tucscrm2024";
 
@@ -25,29 +24,18 @@ export default async function handler(req, res) {
       for (const entry of body.entry) {
         for (const change of entry.changes) {
           if (change.field === "leadgen") {
-            const leadId = change.value.leadgen_id;
-            const formId = change.value.form_id;
-            const pageId = change.value.page_id;
-            const adId = change.value.ad_id;
-
-            // Guardar en Firestore
-            await setDoc(doc(db, "leads", leadId), {
-              leadId,
-              formId,
-              pageId,
-              adId,
+            // Guardar usando saveLeadToFirebase
+            await saveLeadToFirebase({
+              ...change.value,
               receivedAt: new Date().toISOString(),
               status: "pending"
             });
-
             console.log("Lead recibido y almacenado");
           }
         }
       }
-
       return res.status(200).send("EVENT_RECEIVED");
     }
-
     return res.status(404).send("No es un evento de leadgen");
   }
 
