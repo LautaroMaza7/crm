@@ -116,7 +116,7 @@ export function DataTablePagination({ table }) {
       </Card>
 
       {/* Paginación mejorada */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between p-3">
         <div className="flex items-center gap-2">
           <Button
             variant="outline"

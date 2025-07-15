@@ -18,7 +18,9 @@ import { useResponsiveColumns } from "../(tables)/data-table/advanced/components
 
 export default function LeadsPage() {
   const { leads, loading } = useLeads();
-  const columns = useResponsiveColumns();
+  const columns = useResponsiveColumns({
+    onNameClick: (id) => `/leads/${id}`
+  });
   return (
     <div className="space-y-6">
       {/* Header con título y acciones */}

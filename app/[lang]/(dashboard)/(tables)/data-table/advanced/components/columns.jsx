@@ -10,8 +10,9 @@ import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import React from "react";
+import Link from "next/link";
 
-export function useResponsiveColumns() {
+export function useResponsiveColumns(options = {}) {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const [modalData, setModalData] = React.useState(null);
 
@@ -22,11 +23,20 @@ export function useResponsiveColumns() {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Nombre" />
       ),
-      cell: ({ row }) => (
-        <div className="flex items-center gap-2">
-          <span className="font-semibold text-foreground">{row.getValue("nombre")}</span>
-        </div>
-      ),
+      cell: ({ row }) => {
+        const id = row.original.id;
+        const nombre = row.getValue("nombre");
+        if (options.onNameClick) {
+          return (
+            <Link href={options.onNameClick(id)} className="text-primary underline hover:text-primary/80 font-semibold">
+              {nombre}
+            </Link>
+          );
+        }
+        return (
+          <span className="font-semibold text-foreground">{nombre}</span>
+        );
+      },
     },
     {
       accessorKey: "estado",
