@@ -15,6 +15,7 @@ export function useResponsiveColumns() {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const [modalData, setModalData] = React.useState(null);
 
+  // Columnas clave (siempre visibles)
   const baseColumns = [
     {
       accessorKey: "nombre",
@@ -75,6 +76,67 @@ export function useResponsiveColumns() {
         );
       },
     },
+  ];
+
+  // Columnas de detalles (solo desktop)
+  const detailColumns = [
+    {
+      accessorKey: "email",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Email" />
+      ),
+      cell: ({ row }) => row.getValue("email"),
+    },
+    {
+      accessorKey: "telefono",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Teléfono" />
+      ),
+      cell: ({ row }) => row.getValue("telefono"),
+    },
+    {
+      accessorKey: "descripcion",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Descripción" />
+      ),
+      cell: ({ row }) => row.getValue("descripcion"),
+    },
+    {
+      accessorKey: "fuente",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Fuente" />
+      ),
+      cell: ({ row }) => row.getValue("fuente"),
+    },
+    {
+      accessorKey: "createdAt",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Fecha" />
+      ),
+      cell: ({ row }) => {
+        const fecha = row.getValue("createdAt");
+        return fecha ? format(new Date(fecha), "dd/MM/yyyy", { locale: es }) : "-";
+      },
+    },
+  ];
+
+  if (!isMobile) {
+    // En desktop, mostrar todas las columnas (clave + detalles)
+    return [
+      ...baseColumns,
+      ...detailColumns,
+      {
+        id: "acciones",
+        header: () => <span>Acciones</span>,
+        cell: ({ row }) => <DataTableRowActions row={row} />, // Acciones por fila si las tienes
+        enableSorting: false,
+        enableHiding: false,
+      },
+    ];
+  }
+  // En mobile, solo mostrar las columnas clave y el botón +
+  return [
+    ...baseColumns,
     {
       id: "ver-mas",
       header: () => <span>Más</span>,
@@ -112,11 +174,4 @@ export function useResponsiveColumns() {
       enableHiding: false,
     },
   ];
-
-  if (!isMobile) {
-    // En desktop, usar las columnas originales
-    return baseColumns;
-  }
-  // En mobile, solo mostrar las columnas esenciales y el botón de más
-  return baseColumns;
 }

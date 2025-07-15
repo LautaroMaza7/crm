@@ -34,7 +34,7 @@ export default function LeadsPage() {
 
       {/* Tabla principal */}
       <div className="w-full overflow-x-auto">
-        <Card className="border border-border shadow-sm min-w-[600px] sm:min-w-0">
+        <Card className="border border-border shadow-sm sm:min-w-0">
           <CardHeader className="border-b border-border bg-muted/50">
             <CardTitle className="text-xl font-semibold text-foreground flex items-center gap-2">
               <Users className="h-5 w-5 text-primary" />
