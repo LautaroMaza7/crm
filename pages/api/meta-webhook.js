@@ -1,30 +1,56 @@
-import { saveLeadToFirebase } from "../../lib/firebase";
+import { db } from "@/lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
+
+const VERIFY_TOKEN = "lautileads2024"; // El mismo que pusiste en Meta
 
 export default async function handler(req, res) {
-  // Verificación del webhook de Meta (GET)
   if (req.method === "GET") {
-    const VERIFY_TOKEN = process.env.META_VERIFY_TOKEN;
-    if (
-      req.query["hub.mode"] === "subscribe" &&
-      req.query["hub.verify_token"] === VERIFY_TOKEN
-    ) {
-      return res.status(200).send(req.query["hub.challenge"]);
+    // Verificación de Meta
+    const mode = req.query["hub.mode"];
+    const token = req.query["hub.verify_token"];
+    const challenge = req.query["hub.challenge"];
+
+    if (mode === "subscribe" && token === VERIFY_TOKEN) {
+      return res.status(200).send(challenge);
+    } else {
+      return res.status(403).send("Token inválido");
     }
-    return res.status(403).send("Forbidden");
   }
 
-  // Recepción de leads (POST)
   if (req.method === "POST") {
-    try {
-      const leadData = req.body;
-      await saveLeadToFirebase(leadData);
-      return res.status(200).json({ success: true });
-    } catch (error) {
-      return res.status(500).json({ error: "Error al guardar el lead" });
+    const body = req.body;
+
+    // Validar si es leadgen
+    if (body.object === "page") {
+      for (const entry of body.entry) {
+        for (const change of entry.changes) {
+          if (change.field === "leadgen") {
+            const leadId = change.value.leadgen_id;
+            const formId = change.value.form_id;
+            const pageId = change.value.page_id;
+            const adId = change.value.ad_id;
+
+            // Guardar en Firestore
+            await setDoc(doc(db, "leads", leadId), {
+              leadId,
+              formId,
+              pageId,
+              adId,
+              receivedAt: new Date().toISOString(),
+              status: "pending"
+            });
+
+            console.log("Lead recibido y almacenado");
+          }
+        }
+      }
+
+      return res.status(200).send("EVENT_RECEIVED");
     }
+
+    return res.status(404).send("No es un evento de leadgen");
   }
 
-  // Si el método no es GET ni POST
   res.setHeader("Allow", ["GET", "POST"]);
   res.status(405).end(`Method ${req.method} Not Allowed`);
 } 
