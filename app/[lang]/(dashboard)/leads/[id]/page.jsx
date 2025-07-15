@@ -10,11 +10,13 @@ import { getLeadById } from "@/lib/firebase";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import Link from "next/link";
+import { useVendedores } from "@/hooks/useVendedores";
 
 export default function LeadDetailPage() {
   const { id } = useParams();
   const [lead, setLead] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { vendedores } = useVendedores();
 
   useEffect(() => {
     getLeadById(id).then((data) => {
@@ -22,6 +24,9 @@ export default function LeadDetailPage() {
       setLoading(false);
     });
   }, [id]);
+
+  // Buscar el vendedor asignado
+  const vendedorAsignado = vendedores.find(v => v.id === lead?.vendedor);
 
   if (loading) return <div className="p-8 text-center">Cargando detalles...</div>;
   if (!lead) return <div className="p-8 text-center text-destructive">Lead no encontrado</div>;
@@ -67,7 +72,19 @@ export default function LeadDetailPage() {
             </div>
             <div className="flex items-center gap-3 text-base">
               <UserCheck className="w-5 h-5 text-primary" />
-              <span>{lead.vendedor || <span className="text-muted-foreground">Sin asignar</span>}</span>
+              {vendedorAsignado ? (
+                <Link href={`/user-profile/${vendedorAsignado.id}`} className="flex items-center gap-2 hover:underline group">
+                  {vendedorAsignado.avatar && (
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage src={vendedorAsignado.avatar} alt={vendedorAsignado.nombre} />
+                      <AvatarFallback>{vendedorAsignado.nombre?.[0]}</AvatarFallback>
+                    </Avatar>
+                  )}
+                  <span className="group-hover:text-primary transition-colors">{vendedorAsignado.nombre}</span>
+                </Link>
+              ) : (
+                <span className="text-muted-foreground">Sin asignar</span>
+              )}
             </div>
           </div>
           <div className="space-y-3">
